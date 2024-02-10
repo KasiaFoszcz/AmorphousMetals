@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "metale_amorficzne"
-version = "0.1.0"
+version = "0.0.0"  # Placeholder for dynamic versioning.
 description = ""
 authors = ["Katarzyna Foszcz <kasia@foszcz.co>"]
 packages = [{ include = "metale_amorficzne" }]
@@ -21,6 +21,12 @@ streamlit = "^1.31.0"
 [tool.poetry.group.dev.dependencies]
 isort = "^5.13.2"
 
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+metadata = true
+style = "pep440"
+
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
+build-backend = "poetry_dynamic_versioning.backend"
