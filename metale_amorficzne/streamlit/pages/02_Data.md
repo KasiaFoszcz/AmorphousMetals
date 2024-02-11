@@ -1,6 +1,4 @@
-# Data
-
-## Materials and research methods used for this study (Data)
+## Materials and research methods used in this study
 
 - Zirconium Copper (ZrCu) and Zirconium Titanium (ZrTi) alloys,
 - nanoindentation of specifically prepared, polished metal samples in the form
@@ -10,7 +8,7 @@
 - data output from nanoindentation machine *CSM Instruments NHT2* comes as .TXT
   file and contains calculations of 21 parameters for each indentation point,
 
-## Methods and Results
+## Analysis Methods and Results
 
 I prepared a parser for output files from the *CSM Instruments NHT2*
 nanoindentation machine. Initially I tried classification, but after a while of
