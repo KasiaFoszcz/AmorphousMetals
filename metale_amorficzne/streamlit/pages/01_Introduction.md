@@ -1,6 +1,6 @@
-## Introduction
+# Introduction
 
-### Analyzer for Researchers at Wroclaw University of Science and Technology
+## Analyzer for Researchers at Wroclaw University of Science and Technology
 
 The purpose of this study is to develop an _Amorphous Metals Analyzer_
 specifically designed for researchers at Wroclaw University of Science and
@@ -9,14 +9,14 @@ evaluating produced amorphous materials. By utilizing this tool, researchers can
 obtain more accurate and faster results regarding the number and properties of
 phases present in a given amorphous metal sample.
 
-### Integration with Nanoindention Machine
+## Integration with Nanoindention Machine
 
 The Amorphous Metals Analyzer is integrated with a nanoindention machine, which
 is capable of measuring various mechanical properties of the sample. The results
 obtained from the nanoindention machine are fed into the analyzer, allowing for
 a comprehensive analysis of the material.
 
-### Clustering of Metal Phases and Calculation of Mechanical Properties
+## Clustering of Metal Phases and Calculation of Mechanical Properties
 
 Once the data from the nanoindention machine is inputted into the analyzer, the
 application performs clustering of the different metal phases present in the
@@ -34,7 +34,7 @@ research and development.
 
 ---
 
-### What are amorphous metals?
+## What are amorphous metals?
 
 Amorphous metal also known as metallic glass or glassy metal is a solid metallic
 material, usually an alloy, with disordered atomic-scale structure.
@@ -45,18 +45,17 @@ glass-like structure. But unlike common glasses, such as window glass, which are
 typically electrical insulators, amorphous metals have good electrical
 conductivity and can show metallic luster.
 
-Amorphous metal is usually an alloy rather than a pure metal. The alloys contain
-atoms of significantly different sizes, leading to low free volume (and
-therefore up to orders of magnitude higher viscosity than other metals and
-alloys) in molten state. The viscosity prevents the atoms moving enough to form
-an ordered lattice. The material structure also results in low shrinkage during
-cooling, and resistance to plastic deformation. The absence of grain boundaries,
-the weak spots of crystalline materials, leads to better resistance to wear and
-corrosion. Amorphous metals, while technically glasses, are also much tougher
-and less brittle than oxide glasses and ceramics. Amorphous metals can be
-grouped in two categories, as either non-ferromagnetic, if they are composed of
-Ln, Mg, Zr, Ti, Pd, Ca, Cu, Pt and Au, or ferromagnetic alloys, if they are
-composed of Fe, Co, and Ni.
+Amorphous metal alloys contain atoms of significantly different sizes, leading
+to low free volume (and therefore up to orders of magnitude higher viscosity
+than other metals and alloys) in molten state. The viscosity prevents the atoms
+moving enough to form an ordered lattice. The material structure also results in
+low shrinkage during cooling, and resistance to plastic deformation. The absence
+of grain boundaries, the weak spots of crystalline materials, leads to better
+resistance to wear and corrosion. Amorphous metals, while technically glasses,
+are also much tougher and less brittle than oxide glasses and ceramics.
+Amorphous metals can be grouped in two categories, as either non-ferromagnetic,
+if they are composed of Ln, Mg, Zr, Ti, Pd, Ca, Cu, Pt and Au, or ferromagnetic
+alloys, if they are composed of Fe, Co, and Ni.
 
 The alloys of boron, silicon, phosphorus, and other glass formers with magnetic
 metals (iron, cobalt, nickel) have high magnetic susceptibility, with low
@@ -89,9 +88,9 @@ easy processing, such as by injection molding, in much the same way as polymers.
 As a result, amorphous alloys have been commercialized for use in sports
 equipment, medical devices, and as cases for electronic equipment.
 
-### Usage of amorphous metals
+## Usage of amorphous metals
 
-#### Commercial
+### Commercial
 
 Currently the most important application is due to the special magnetic
 properties of some ferromagnetic metallic glasses. The low magnetization loss is
@@ -117,7 +116,7 @@ Zr-Al-Ni-Cu based metallic glass can be shaped into 2.2 to 5 by 4 mm (0.087 to
 these sensors are smaller, more sensitive, and possess greater pressure
 endurance compared to conventional stainless steel made from cold working.
 
-#### Potential
+### Potential
 
 Amorphous metals exhibit unique softening behavior above their glass transition
 and this softening has been increasingly explored for thermoplastic forming of
@@ -153,18 +152,21 @@ material can withstand an impact without deforming permanently (plasticity). The
 alloy can withstand pressure and stress of up to 12.5 GPa (123,000 atm) without
 undergoing any permanent deformation, this is the highest impact resistance of
 any bulk metallic glass ever recorded (as of 2016). This makes it as an
-attractive option for Armour material and other applications which requires high
-stress tolerance. Additive manufacturing One challenge when synthesising a
-metallic glass is that the techniques often only produce very small samples, due
-to the need for high cooling rates. 3D-printing methods have been suggested as a
-method to create larger bulk samples. Selective laser melting (SLM) is one
-example of an additive manufacturing method that has been used to make iron
-based metallic glasses. Laser foil printing (LFP) is another method where foils
-of the amorphous metals are stacked and welded together, layer by layer.
+attractive option for any applications which requires high stress tolerance.
+
+### Additive manufacturing
+
+One challenge when synthesising a metallic glass is that the techniques often
+only produce very small samples, due to the need for high cooling rates.
+3D-printing methods have been suggested as a method to create larger bulk
+samples. Selective laser melting (SLM) is one example of an additive
+manufacturing method that has been used to make iron based metallic glasses.
+Laser foil printing (LFP) is another method where foils of the amorphous metals
+are stacked and welded together, layer by layer.
 
 ---
 
-### What is nanoindentation?
+## What is nanoindentation?
 
 In an indentation test, a hard tip whose mechanical properties are known
 (frequently made of a very hard material like diamond) is pressed into a sample
@@ -198,77 +200,3 @@ load-displacement curve (such as the one shown in the figure below). These
 curves can be used to extract mechanical properties of the material.
 
 ![Indentation curve](https://upload.wikimedia.org/wikipedia/commons/6/6c/Load_disp_indentation.svg?download)
-
----
-
-#### Materials and research methods used for this study
-
-- Zirconium Copper (ZrCu) and Zirconium Titanium (ZrTi) alloys,
-- nanoindentation of specifically prepared, polished metal samples in the form
-  of thin coins. Indentation was performed on each sample in a matrix of 15×15
-  or 10×10 points in distances ranging from 5 to 20 um, force applied ranging
-  from 25mN to 200mN.
-
----
-
-## Methods and Results
-
-Initially I tried classification, but after a while of trials with decision
-trees, I realised that in this case clustering should be performed, as the data
-in unlabelled.
-
-### Hierarchical clustering
-
-Hierarchical clustering gave the best results.
-
-### KMeans clustering
-
-### ChatGPT clustering
-
-### OPTICS clustering
-
-## Discussion
-
----
-
-### References
-
-1. Hay, J.L.; Pharr, G.M. (2000). "Instrumented indentation testing". ASM
-   Handbook, Vol. 8, Mechanical Testing and Evaluation. ASM International. pp.
-   231–242. ISBN 978-0-87170-389-7.
-2. W.C. Oliver and G.M. Pharr (2011). "Measurement of hardness and elastic
-   modulus by instrumented indentation: Advances in understanding and
-   refinements to methodology" (PDF). Journal of Materials Research.
-3. Nanoindentation Lecture 1 Basic Principle, by Do Kyung Kim, Dept. of Material
-   Science and Engineering KAIST, Korea.
-4. Fischer-Cripps, A.C. Nanoindentation. (Springer: New York), 2004.
-5. W.C. Oliver and G.M. Pharr. An improved technique for determining hardness
-   and elastic modulus using load and displacement sensing indentation
-   experiments, J. Mater. Res., vol. 7, No. 6, June 1992.
-6. Peker, A.; Johnson, W. L. (25 October 1993). "A highly processable metallic
-   glass: Zr41.2Ti13.8Cu12.5Ni10.0Be22.5" (PDF). Applied Physics Letters. 63
-   (17): 2342–2344. Bibcode:1993ApPhL..63.2342P. doi:10.1063/1.110520.
-7. Nishiyama, Nobuyuki; Amiya, Kenji; Inoue, Akihisa (October 2007). "Novel
-   applications of bulk metallic glass for industrial products". Journal of
-   Non-Crystalline Solids. 353 (32–40): 3615–3621. Bibcode:2007JNCS..353.3615N.
-   doi:10.1016/j.jnoncrysol.2007.05.170.
-8. Nishiyama, N.; Amiya, K.; Inoue, A. (March 2007). "Recent progress of bulk
-   metallic glasses for strain-sensing devices". Materials Science and
-   Engineering: A. 449–451: 79–83. doi:10.1016/j.msea.2006.02.384.
-9. Saotome, Y.; Iwazaki, H. (2000). "Superplastic extrusion of microgear shaft
-   of 10 μm in module". Microsystem Technologies. 6 (4): 126.
-   doi:10.1007/s005420050180. S2CID 137549527.
-10. Kumar, G.; Tang, H. X.; Schroers, J. (2009). "Nanomoulding with amorphous
-    metals". Nature. 457 (7231): 868–872. Bibcode:2009Natur.457..868K.
-    doi:10.1038/nature07718. PMID 19212407. S2CID 4337794.
-11. Hojati-Talemi, Pejman (2011). "High performance bulk metallic glass/carbon
-    nanotube composite cathodes for electron field emission". Applied Physics
-    Letters. 99 (19): 194104. Bibcode:2011ApPhL..99s4104H.
-    doi:10.1063/1.3659898.
-12. Maruyama, Masaaki (June 11, 2009). "Japanese Universities Develop Ti-based
-    Metallic Glass for Artificial Finger Joint". Tech-on. "Fixing bones with
-    dissolvable glass". Institute of Physics. October 1, 2009.
-13. "Engineers Develop Record-Breaking Steel". Engineering.com. Retrieved
-    2022-06-24.
-14. "Record-breaking steel could be used for body armor, shields for
-    satellites". jacobsschool.ucsd.edu. Retrieved 2022-06-24.
