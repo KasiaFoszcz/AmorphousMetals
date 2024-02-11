@@ -199,4 +199,5 @@ can be measured. A record of these values can be plotted on a graph to create a
 load-displacement curve (such as the one shown in the figure below). These
 curves can be used to extract mechanical properties of the material.
 
-![Indentation curve](https://upload.wikimedia.org/wikipedia/commons/6/6c/Load_disp_indentation.svg?download)
+<!-- TODO: Use SVG once https://github.com/streamlit/streamlit/pull/8137 is released. -->
+![Indentation curve](./app/static/01_load_disp_indentation.png)
