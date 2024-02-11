@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  streamlit:
+    image: ghcr.io/kasiafoszcz/amorphousmetals:${DOCKER_TAG:-edge}
+    build: .
+    ports:
+      - 8501:8501
+
+  streamlit-local:
+    image: ghcr.io/kasiafoszcz/amorphousmetals:${DOCKER_TAG:-edge}
+    build: .
+    ports:
+      - 8501:8501
+    volumes:
+      - ./metale_amorficzne:/app/metale_amorficzne:ro
+    environment:
+      STREAMLIT_SERVER_RUN_ON_SAVE: True

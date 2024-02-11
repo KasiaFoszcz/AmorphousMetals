@@ -17,7 +17,7 @@ nanoindentation machine. Initially I tried classification, but after a while of
 trials with decision trees, I realised that in this case clustering should be
 performed, as the data in unlabelled.
 
-### Methods I tried:
+### Tried methods
 
 - Hierarchical clustering (successful)
 - KMeans clustering (semi-successful)
