@@ -32,4 +32,4 @@ ENV STREAMLIT_SERVER_PORT=8501 \
 # Run the Streamlit app.
 EXPOSE ${STREAMLIT_SERVER_PORT}
 HEALTHCHECK CMD curl --fail http://localhost:${STREAMLIT_SERVER_PORT}/_stcore/health
-ENTRYPOINT ["poetry", "run", "streamlit", "run", "metale_amorficzne/streamlit.py"]
+ENTRYPOINT ["poetry", "run", "streamlit", "run", "metale_amorficzne/Home.py"]
