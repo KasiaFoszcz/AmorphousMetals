@@ -1,3 +1,3 @@
-from metale_amorficzne.streamlit.utils import show_markdown
+from metale_amorficzne.streamlit.utils import show_markdown_sibling
 
-show_markdown(__file__)
+show_markdown_sibling(__file__)
