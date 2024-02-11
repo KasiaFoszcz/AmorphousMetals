@@ -1,5 +1,3 @@
-# KMeans clustering
-
 The most popular partitioning method is the k-means clustering algorithm, which
 involves randomly selecting k initial centroids and then iteratively assigning
 each data point to the nearest centroid and recalculating the centroid of each
@@ -16,7 +14,7 @@ converges to a stable solution.
 
 ## Benefits
 
-- Simple and easy to understand
+- Simple and easy to understand.
 - Fast and scalable, making it suitable for large datasets.
 - Can handle different types of data, including numerical and categorical data.
 - Can be used in a wide range of applications.

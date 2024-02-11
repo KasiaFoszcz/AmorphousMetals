@@ -1,5 +1,3 @@
-# Hierarchical clustering
-
 Hierarchical clustering (scikit-learn library) gave the best results so far.
 
 Hierarchical clustering is a general family of clustering algorithms that build
