@@ -16,7 +16,7 @@ RUN apt-get update \
         build-essential \
         curl \
         python3-poetry \
-    && poetry install --no-root \
+    && poetry install --no-root --only main,streamlit \
     && apt-get remove -y build-essential \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
