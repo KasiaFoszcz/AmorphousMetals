@@ -14,63 +14,63 @@ method.
 
 The prompt looked as follows:
 
+```md
+# CONTEXT #
+I analyze mechanical properties of materials. I have a dataset of information
+on my materials: [HVIT, E*, hr, Epsilon, Welast, Wplast].
+
+#############
+
+# OBJECTIVE #
+I want you to use the dataset to cluster my the observations into groups and
+then give me the average value of HIT for each group. Use this step-by-step
+process and do not use code:
+
+1. CLUSTERS: Use the columns of the dataset to cluster the rows of the dataset,
+   such that observations within the same cluster have similar column values
+   while observations in different clusters have distinctly different column
+   values. Ensure that each row only belongs to 1 cluster.
+
+For each cluster found,
+2. CLUSTER_INFORMATION: Describe the cluster in terms of the dataset columns.
+3. CLUSTER_NAME: Interpret [CLUSTER_INFORMATION] to obtain a short name for the
+   observation group in this cluster.
+4. HIT_VALUE: Give me the average value of HIT for each group
+
+#############
+
+# STYLE #
+Business analytics report
+
+#############
+
+# TONE #
+Professional, technical
+
+#############
+
+# AUDIENCE #
+My business partners. Convince them that your clustering is well thought-out
+and fully backed by data.
+
+#############
+
+# RESPONSE: MARKDOWN REPORT #
+<For each cluster in [CLUSTERS]>
+— Observation Group: [CLUSTER_NAME]
+— Profile: [CLUSTER_INFORMATION]
+— HIT Value: [HIT_VALUE]
+
+<Annex> Give a table of the list of all row numbers belonging to each cluster,
+in order to back up your analysis. Use these table headers: [[CLUSTER_NAME],
+List of Rows].
+
+#############
+
+# START ANALYSIS #
+If you understand, ask me for my dataset.
 ```
- # CONTEXT #
- I analyze mechanical properties of materials. I have a dataset of information
- on my materials: [HVIT, E*, hr, Epsilon, Welast, Wplast].
 
- #############
-
- # OBJECTIVE #
- I want you to use the dataset to cluster my the observations into groups and
- then give me the average value of HIT for each group. Use this step-by-step
- process and do not use code:
-
- 1. CLUSTERS: Use the columns of the dataset to cluster the rows of the dataset,
-    such that observations within the same cluster have similar column values
-    while observations in different clusters have distinctly different column
-    values. Ensure that each row only belongs to 1 cluster.
-
- For each cluster found,
- 2. CLUSTER_INFORMATION: Describe the cluster in terms of the dataset columns.
- 3. CLUSTER_NAME: Interpret [CLUSTER_INFORMATION] to obtain a short name for the
-    observation group in this cluster.
- 4. HIT_VALUE: Give me the average value of HIT for each group
-
- #############
-
- # STYLE #
- Business analytics report
-
- #############
-
- # TONE #
- Professional, technical
-
- #############
-
- # AUDIENCE #
- My business partners. Convince them that your clustering is well thought-out
- and fully backed by data.
-
- #############
-
- # RESPONSE: MARKDOWN REPORT #
- <For each cluster in [CLUSTERS]>
- — Observation Group: [CLUSTER_NAME]
- — Profile: [CLUSTER_INFORMATION]
- — HIT Value: [HIT_VALUE]
-
- <Annex> Give a table of the list of all row numbers belonging to each cluster,
- in order to back up your analysis. Use these table headers: [[CLUSTER_NAME],
- List of Rows].
-
- #############
-
- # START ANALYSIS #
- If you understand, ask me for my dataset.
-
-```
 The following block is the Chat's response.
 
 > Thank you for providing the dataset. Let's proceed with the analysis.

@@ -39,5 +39,5 @@
     2022-06-24.
 14. "Record-breaking steel could be used for body armor, shields for
     satellites". jacobsschool.ucsd.edu. Retrieved 2022-06-24.
-15. https://scikit-learn.org/stable/modules/clustering.html#hierarchical-clustering
-16. https://datarundown.com/types-of-clustering/
+15. <https://scikit-learn.org/stable/modules/clustering.html#hierarchical-clustering>
+16. <https://datarundown.com/types-of-clustering/>
