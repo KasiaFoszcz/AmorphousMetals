@@ -7,7 +7,25 @@ import numpy as np
 import numpy.typing as npt
 import pandas as pd
 
-HoleMap = tuple[tuple[int, int], ...]
+DEFAULT_COLUMNS = (
+    "HIT (O&P) [MPa]",
+    "HVIT (O&P) [Vickers]",
+    "EIT (O&P) [GPa]",
+    "nit [%]",
+)
+"""Default columns used for clustering."""
+
+
+def image_width(df: pd.DataFrame) -> int:
+    """Get (square) image width for the given data frame.
+
+    Arguments:
+        df -- source data frame.
+
+    Returns:
+        Width/height of the resulting square image.
+    """
+    return int(math.sqrt(len(df)))
 
 
 def has_holes(df: pd.DataFrame) -> tuple[bool, ...]:
@@ -20,6 +38,21 @@ def has_holes(df: pd.DataFrame) -> tuple[bool, ...]:
         If a row has a hole, the value is True.
     """
     return tuple(any(row.isna()) for _, row in df.iterrows())
+
+
+def filter_holes(df: pd.DataFrame) -> pd.DataFrame:
+    """Filter out data holes from data frame.
+
+    Arguments:
+        df -- source data frame.
+
+    Returns:
+        Data frame without data holes.
+    """
+    return df[~df.isnull().any(axis=1)]
+
+
+HoleMap = tuple[tuple[int, int], ...]
 
 
 def generate_hole_map(df: pd.DataFrame) -> HoleMap:

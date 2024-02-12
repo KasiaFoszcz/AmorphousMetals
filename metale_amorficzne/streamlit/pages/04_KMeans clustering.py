@@ -10,3 +10,6 @@ results, method = st.tabs(["Results", "Method"])
 
 with method:
     show_markdown_sibling(__file__)
+
+with results:
+    st.write("Work in progress…")

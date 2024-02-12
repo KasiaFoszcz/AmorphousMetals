@@ -1,10 +1,17 @@
 {
     "cSpell.words": [
+        "clust",
+        "colormaps",
+        "dataframe",
         "DBSCAN",
         "HVIT",
+        "iloc",
+        "imshow",
         "nanoindenter",
+        "selectbox",
         "streamlit",
         "subpage",
-        "Vickers"
+        "Vickers",
+        "viridis"
     ]
 }

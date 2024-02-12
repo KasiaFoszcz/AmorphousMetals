@@ -8,14 +8,9 @@ import numpy as np
 import pandas as pd
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 
-REQUIRED_COLUMNS = (
-    "X [mm]",
-    "Y [mm]",
-    "HIT (O&P) [MPa]",
-    "HVIT (O&P) [Vickers]",
-    "EIT (O&P) [GPa]",
-    "nit [%]",
-)
+from metale_amorficzne.utils import DEFAULT_COLUMNS
+
+REQUIRED_COLUMNS = ("X [mm]", "Y [mm]", *DEFAULT_COLUMNS)
 """Required columns in source file to perform the default analysis."""
 
 
