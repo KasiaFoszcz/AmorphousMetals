@@ -14,5 +14,6 @@ services:
       - 8501:8501
     volumes:
       - ./metale_amorficzne:/app/metale_amorficzne:ro
+      - ./data:/app/data:ro
     environment:
       STREAMLIT_SERVER_RUN_ON_SAVE: True

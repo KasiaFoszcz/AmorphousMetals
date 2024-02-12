@@ -1,6 +1,8 @@
 """Materials and research methods used for this study Streamlit subpage."""
 
 import math
+import os
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -63,14 +65,44 @@ def show_file(df: pd.DataFrame):
     st.pyplot(fig)
 
 
-with input:
-    input_file = st.file_uploader("Upload the raw data from nanoindenter:", type="txt")
-    if input_file is not None:
-        try:
-            st.session_state.df = convert_raw_to_df(input_file)
-        except ValueError as e:
-            st.error(f"Parser error: {e}")
+# Wrap `convert_raw_to_df` with Streamlit caching decorator.
+convert_raw_to_df = st.cache_data(convert_raw_to_df)
 
+
+with input:
+    # Get presets (if available).
+    metal_data_path = os.getenv("METAL_DATA_PATH")
+    presets = (
+        {
+            path.with_suffix("").name: path
+            for path in Path(metal_data_path).glob("*/*.txt", case_sensitive=False)
+        }
+        if metal_data_path is not None
+        else {}
+    )
+
+    # Source selection (file or preset).
+    source_cols = st.columns(1 if len(presets) == 0 else 2)
+
+    input_file = source_cols[0].file_uploader(
+        "Upload raw data from nanoindenter:", type="txt"
+    )
+
+    preset: str | None = None
+    if len(source_cols) > 1:
+        preset = source_cols[1].selectbox(
+            "Or select a preset:", presets, index=None, disabled=input_file is not None
+        )
+
+    try:
+        if input_file is not None:
+            st.session_state.df = convert_raw_to_df(input_file)
+        elif preset is not None:
+            st.session_state.df = convert_raw_to_df(presets[preset])
+    except ValueError as e:
+        st.error(f"Parser error: {e}")
+
+    # Show the data frame.
     if "df" in st.session_state:
         show_file(st.session_state.df)
 

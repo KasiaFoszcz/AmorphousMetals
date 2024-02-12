@@ -6,7 +6,7 @@ authors = ["Katarzyna Foszcz <kasia@foszcz.co>"]
 packages = [{ include = "metale_amorficzne" }]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
 pandas = "^2.1.4"
 matplotlib = "^3.8.2"
 more-itertools = "^10.1.0"
@@ -24,7 +24,6 @@ streamlit = "^1.31.0"
 ipykernel = "^6.29.2"
 jupyterlab-widgets = "^3.0.10"
 ipympl = "^0.9.3"
-imageio = "^2.33.1"
 
 [tool.poetry-dynamic-versioning]
 enable = true
