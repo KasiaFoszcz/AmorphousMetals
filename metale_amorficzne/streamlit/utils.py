@@ -5,16 +5,24 @@ from pathlib import Path
 import streamlit as st
 
 
-def show_markdown_sibling(source_name: str, unsafe_allow_html: bool = False, **kwargs):
-    """Show Markdown page acommpanying the current Streamlit page file.
+def show_markdown_sibling(
+    source_name: str,
+    subpage: str | None = None,
+    unsafe_allow_html: bool = False,
+    **kwargs,
+):
+    """Show Markdown page accompanying the current Streamlit page file.
 
     Args:
-        source_name (str): `__file__` of the caller.
-        unsafe_allow_html (bool, optional): Allow unsafe HTML (passed to
-            `st.markdown()`). Defaults to False.
+        source_name -- `__file__` of the caller.
+        subpage -- optional subpage name. Defaults to None.
+        unsafe_allow_html -- Allow unsafe HTML (passed to `st.markdown()`).
+            Defaults to False.
     """
     return st.markdown(
-        Path(source_name).with_suffix(".md").read_text("utf8"),
+        Path(source_name.replace(".py", ".py" if subpage is None else f"_{subpage}"))
+        .with_suffix(".md")
+        .read_text("utf8"),
         unsafe_allow_html=unsafe_allow_html,
-        **kwargs
+        **kwargs,
     )

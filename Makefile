@@ -5,7 +5,7 @@ DOCKER_COMPOSE_PULL := $(DOCKER_COMPOSE) pull
 DOCKER_COMPOSE_RUN_ARGS := --rm -p 8501:8501
 DOCKER_COMPOSE_RUN := $(DOCKER_COMPOSE) run $(DOCKER_COMPOSE_RUN_ARGS)
 
-ENTRYPOINT := metale_amorficzne/streamlit.py
+ENTRYPOINT := metale_amorficzne/streamlit/Home.py
 DOCKER_TAG := edge
 
 run-local:
