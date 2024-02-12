@@ -1,18 +1,22 @@
 POETRY_RUN := poetry run
 DOCKER_COMPOSE := docker compose
 
+ENTRYPOINT := metale_amorficzne/streamlit/Home.py
+DATA_PATH := data/
+DOCKER_TAG := edge
+
+DATA_PATH_ABS := $(abspath $(DATA_PATH))
+
 DOCKER_COMPOSE_PULL := $(DOCKER_COMPOSE) pull
 DOCKER_COMPOSE_RUN_ARGS := --rm -p 8501:8501
 DOCKER_COMPOSE_RUN := $(DOCKER_COMPOSE) run $(DOCKER_COMPOSE_RUN_ARGS)
 
-ENTRYPOINT := metale_amorficzne/streamlit/Home.py
-DOCKER_TAG := edge
-
 run-local:
-	$(POETRY_RUN) streamlit run $(ENTRYPOINT) \
-		--server.runOnSave true \
-		--server.enableStaticServing true \
-		--server.headless true
+	METAL_DATA_PATH="$(DATA_PATH_ABS)" \
+		$(POETRY_RUN) streamlit run $(ENTRYPOINT) \
+			--server.runOnSave true \
+			--server.enableStaticServing true \
+			--server.headless true
 
 DOCKER_SETUP := DOCKER_TAG=$(DOCKER_TAG) $(DOCKER_COMPOSE_PULL)
 

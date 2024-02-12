@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 LABEL org.opencontainers.image.title="Amorphous Metals Streamlit app" \
       org.opencontainers.image.authors="Marek Pikuła <marek@serenitycode.dev>, Katarzyna Foszcz <kasia@foszcz.co>" \
@@ -15,20 +15,22 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
         curl \
-        python3-poetry \
+    && pip install poetry \
     && poetry install --no-root --only main,streamlit \
     && apt-get remove -y build-essential \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
-# Add Python sources.
+# Add example data and Python sources.
+COPY --link data/ /app/data/
 COPY --link metale_amorficzne/ /app/metale_amorficzne/
 
 # Set the default environment.
 ENV STREAMLIT_SERVER_PORT=8501 \
     STREAMLIT_SERVER_ADDRESS=0.0.0.0 \
     STREAMLIT_BROWSER_GATHER_USAGE_STATS=False \
-    STREAMLIT_SERVER_ENABLE_STATIC_SERVING=True
+    STREAMLIT_SERVER_ENABLE_STATIC_SERVING=True \
+    METAL_DATA_PATH=/app/data/
 
 # Run the Streamlit app.
 EXPOSE ${STREAMLIT_SERVER_PORT}
