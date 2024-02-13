@@ -1,17 +1,34 @@
 {
     "cSpell.words": [
+        "amorficzne",
+        "Berkovich",
         "clust",
+        "coercivity",
         "colormaps",
         "dataframe",
         "DBSCAN",
+        "disp",
+        "ductilities",
+        "fcluster",
         "HVIT",
         "iloc",
         "imshow",
+        "Lehigh",
+        "mathrm",
+        "maxclust",
+        "metale",
+        "nanocomposites",
+        "nanoimprint",
+        "nanoindentation",
         "nanoindenter",
+        "nanoparticles",
+        "nanotubes",
+        "noncarcinogenic",
         "selectbox",
         "streamlit",
         "subpage",
         "Vickers",
-        "viridis"
+        "viridis",
+        "Vitreloy"
     ]
 }

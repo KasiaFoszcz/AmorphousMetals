@@ -41,3 +41,6 @@
     satellites". jacobsschool.ucsd.edu. Retrieved 2022-06-24.
 15. <https://scikit-learn.org/stable/modules/clustering.html#hierarchical-clustering>
 16. <https://datarundown.com/types-of-clustering/>
+17. <https://liquidmetal.com/amorphous-metal//>
+18. <https://www.trumpf.com/en_US/solutions/applications/additive-manufacturing/laser-metal-fusion/3d-printing-amorphous-metals/which-amorphous-applications-are-available/>
+19. <https://en.wikipedia.org/wiki/Mass_flow_meter/>

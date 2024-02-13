@@ -26,3 +26,16 @@ def show_markdown_sibling(
         unsafe_allow_html=unsafe_allow_html,
         **kwargs,
     )
+
+
+def get_image_path(source_name: str, name: str) -> str:
+    """Get image path for name relative to page.
+
+    Arguments:
+        source_name -- `__file__` of the caller.
+        name -- name of the image.
+
+    Returns:
+        Absolute path to the image.
+    """
+    return str(Path(source_name).with_suffix("") / name)
