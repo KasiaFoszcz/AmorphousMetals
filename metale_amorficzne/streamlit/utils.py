@@ -5,6 +5,20 @@ from pathlib import Path
 import streamlit as st
 
 
+def get_markdown_sibling(source_name: str, subpage: str | None = None):
+    """Get Markdown page accompanying the current Streamlit page file.
+
+    Args:
+        source_name -- `__file__` of the caller.
+        subpage -- optional subpage name. Defaults to None.
+    """
+    return (
+        Path(source_name.replace(".py", ".py" if subpage is None else f"_{subpage}"))
+        .with_suffix(".md")
+        .read_text("utf8")
+    )
+
+
 def show_markdown_sibling(
     source_name: str,
     subpage: str | None = None,
@@ -20,9 +34,7 @@ def show_markdown_sibling(
             Defaults to False.
     """
     return st.markdown(
-        Path(source_name.replace(".py", ".py" if subpage is None else f"_{subpage}"))
-        .with_suffix(".md")
-        .read_text("utf8"),
+        get_markdown_sibling(source_name, subpage),
         unsafe_allow_html=unsafe_allow_html,
         **kwargs,
     )
