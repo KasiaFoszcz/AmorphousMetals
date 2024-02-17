@@ -1,9 +1,11 @@
 """Streamlit common utilities."""
 
 from pathlib import Path
+from typing import Callable, Sequence
 
 import streamlit as st
 from streamlit.commands.page_config import MenuItems
+from streamlit.delta_generator import DeltaGenerator
 
 MENU_ITEMS: MenuItems = {
     "Report a bug": "https://github.com/KasiaFoszcz/AmorphousMetals/issues",
@@ -66,3 +68,22 @@ def get_image_path(source_name: str, name: str) -> str:
         Absolute path to the image.
     """
     return str(Path(source_name).with_suffix("") / name)
+
+
+def for_tabs(
+    streamlit_func: Callable[[], DeltaGenerator], tabs: Sequence[DeltaGenerator]
+) -> tuple[DeltaGenerator, ...]:
+    """Use Streamlit function on given set of tabs.
+
+    Arguments:
+        streamlit_func -- Streamlit function (e.g., `st.write("Test")`).
+        tabs -- sequence of tabs to apply the `streamlit_fun` to.
+
+    Returns:
+        Results of `streamlit_func` for all `tabs`.
+    """
+    results: list[DeltaGenerator] = []
+    for tab in tabs:
+        with tab:
+            results.append(streamlit_func())
+    return tuple(results)

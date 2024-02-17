@@ -1,15 +1,47 @@
 """Introduction Streamlit subpage."""
 
-import streamlit as st
+from typing import Callable
 
-from metale_amorficzne.streamlit.utils import MENU_ITEMS, get_image_path
+import streamlit as st
+from streamlit.delta_generator import DeltaGenerator
+
+from metale_amorficzne.streamlit.utils import MENU_ITEMS, for_tabs, get_image_path
 
 st.set_page_config(menu_items=MENU_ITEMS)
 
 st.title("Introduction")
 
-st.header("Analyzer for Researchers at Wroclaw University of Science and Technology")
-st.write(
+tabs = st.tabs(["Short introduction", "Full introduction"])
+short, full = tabs
+
+
+def all_tabs(streamlit_func: Callable[[], DeltaGenerator]):
+    """Execute `for_tabs()` for all tabs in this file."""
+    return for_tabs(streamlit_func, tabs)
+
+
+all_tabs(
+    lambda: st.header(
+        "Analyzer for Researchers at Wroclaw University of Science and Technology"
+    )
+)
+short.write(
+    """
+    The _Amorphous Metals Analyzer_ is specifically designed for researchers at Wroclaw
+    University of Science and Technology. By utilizing this tool, researchers can obtain
+    more accurate and faster results regarding the number and properties of phases
+    present in a given amorphous metal sample.
+
+    The Amorphous Metals Analyzer is integrated with a nanoindentation machine, which is
+    capable of measuring various mechanical properties of the sample. The results
+    obtained from the nanoindentation machine are fed into the analyzer. Then, the
+    application performs clustering of the different metal phases present in the sample
+    and calculates key mechanical properties for each phase identified. These results
+    help researchers assess the quality and performance of the amorphous metal,
+    providing valuable insights for further analysis and experimentation.
+    """
+)
+full.write(
     """
     The purpose of this study is to develop an _Amorphous Metals Analyzer_ specifically
     designed for researchers at Wroclaw University of Science and Technology. This
@@ -20,8 +52,8 @@ st.write(
     """
 )
 
-st.header("Integration with Nanoindentation Machine")
-st.write(
+full.header("Integration with Nanoindentation Machine")
+full.write(
     """
     The Amorphous Metals Analyzer is integrated with a nanoindentation machine, which is
     capable of measuring various mechanical properties of the sample. The results
@@ -30,8 +62,8 @@ st.write(
     """
 )
 
-st.header("Clustering of Metal Phases and Calculation of Mechanical Properties")
-st.write(
+full.header("Clustering of Metal Phases and Calculation of Mechanical Properties")
+full.write(
     """
     Once the data from the nanoindentation machine is inputted into the analyzer, the
     application performs clustering of the different metal phases present in the sample.
@@ -48,8 +80,18 @@ st.write(
     """
 )
 
-st.header("What are amorphous metals?")
-st.write(
+all_tabs(lambda: st.header("What are amorphous metals?"))
+short.write(
+    """
+    Amorphous metal also known as metallic glass or glassy metal is a solid metallic
+    material, usually an alloy, with disordered atomic-scale structure.
+
+    Most metals are crystalline in their solid state, which means they have a highly
+    ordered arrangement of atoms. Amorphous metals are non-crystalline, have good
+    electrical conductivity and can show metallic luster.
+    """
+)
+full.write(
     """
     Amorphous metal also known as metallic glass or glassy metal is a solid metallic
     material, usually an alloy, with disordered atomic-scale structure.
@@ -62,17 +104,22 @@ st.write(
     """
 )
 
-st.image(
-    get_image_path(__file__, "CrystalGrain.jpg"),
-    caption="Microscopic image of traditional metal with grain boundaries",
+all_tabs(
+    lambda: st.image(
+        get_image_path(__file__, "comparison.png"), caption="Comparison of structures"
+    )
 )
 
-st.image(
-    get_image_path(__file__, "AmorphousMetal.jpg"),
-    caption="Microscopic image of an amorphous metal",
+short.write(
+    """
+    Amorphous metal alloys contain atoms of significantly different sizes, leading to
+    low free volume that prevents the atoms moving enough to form an ordered lattice.
+    The material structure also results in low shrinkage during cooling, and resistance
+    to plastic deformation. The absence of grain boundaries, the weak spots of
+    crystalline materials, leads to better resistance to wear and corrosion.
+    """
 )
-
-st.write(
+full.write(
     """
     Amorphous metal alloys contain atoms of significantly different sizes, leading to
     low free volume (and therefore up to orders of magnitude higher viscosity than other
@@ -88,12 +135,30 @@ st.write(
     """
 )
 
-st.image(
-    get_image_path(__file__, "comparison.png"),
-    caption="Comparison of structures",
+all_tabs(
+    lambda: st.image(
+        get_image_path(__file__, "CrystalGrain.jpg"),
+        caption="Microscopic image of traditional metal with grain boundaries",
+    )
+    and st.image(
+        get_image_path(__file__, "AmorphousMetal.jpg"),
+        caption="Microscopic image of an amorphous metal",
+    )
 )
 
-st.write(
+short.write(
+    """
+    Amorphous metals derive their strength directly from their non-crystalline
+    structure. One modern amorphous metal, Vitreloy, has a tensile strength that is
+    almost twice that of high-grade titanium.
+
+    Amorphous alloys are true glasses, which means that they soften and flow upon
+    heating. This allows for easy processing, such as by injection molding, in much the
+    same way as polymers. As a result, amorphous alloys have been commercialized for use
+    in sports equipment, medical devices, and as cases for electronic equipment.
+    """
+)
+full.write(
     """
     The alloys of boron, silicon, phosphorus, and other glass formers with magnetic
     metals (iron, cobalt, nickel) have high magnetic susceptibility, with low coercivity
@@ -127,9 +192,18 @@ st.write(
     """
 )
 
-st.header("Usage of amorphous metals")
-st.subheader("Commercial")
-st.write(
+all_tabs(lambda: st.header("Usage of amorphous metals") and st.subheader("Commercial"))
+short.write(
+    """
+    1. Mains transformers and some higher frequency transformers.
+    2. Electronic article surveillance (such as theft control passive ID tags).
+    3. New aerospace materials.
+    4. Coriolis flow meters that are about 28-53 times more sensitive than conventional
+       meters, applied in fossil-fuel, chemical, environmental, semiconductor and
+       medical science industry.
+    """
+)
+full.write(
     """
     Currently the most important application is due to the special magnetic properties
     of some ferromagnetic metallic glasses. The low magnetization loss is used in high
@@ -151,12 +225,12 @@ st.write(
     """
 )
 
-st.image(
+full.image(
     get_image_path(__file__, "coriolis.jpg"),
     caption="A mass flow meter of the Coriolis type",
 )
 
-st.write(
+full.write(
     """
     Zr-Al-Ni-Cu based metallic glass can be shaped into 2.2 to 5 by 4 mm (0.087 to 0.197
     by 0.157 in) pressure sensors for automobile and other industries, and these sensors
@@ -165,9 +239,22 @@ st.write(
     """
 )
 
-st.subheader("Potential")
-
-st.write(
+all_tabs(lambda: st.subheader("Potential"))
+short.write(
+    """
+    1. Nanoimprint lithography where expensive nano-molds made of silicon break easily.
+       Nano-molds made from metallic glasses are easy to fabricate and more durable than
+       silicon molds.
+    2. Nanocomposites for electronic application such as field electron emission
+       devices.
+    3. Biomaterial for implantation into bones as screws, pins, or plates, to fix
+       fractures. Unlike traditional steel or titanium, this material dissolves in
+       organisms at a rate of roughly 1 millimeter per month and is replaced with bone
+       tissue. This speed can be adjusted by varying the content of zinc.
+    4. Any applications which requires high stress tolerance.
+    """
+)
+full.write(
     """
     Amorphous metals exhibit unique softening behavior above their glass transition and
     this softening has been increasingly explored for thermoplastic forming of metallic
@@ -207,9 +294,16 @@ st.write(
     unsafe_allow_html=True,
 )
 
-st.subheader("Additive manufacturing")
-
-st.write(
+all_tabs(lambda: st.subheader("Additive manufacturing"))
+short.write(
+    """
+    One challenge when synthesizing a metallic glass is that the techniques often only
+    produce very small samples, due to the need for high cooling rates. 3D-printing
+    methods have been suggested as a method to create larger products from amorphous
+    metals.
+    """
+)
+full.write(
     """
     One challenge when synthesizing a metallic glass is that the techniques often only
     produce very small samples, due to the need for high cooling rates. 3D-printing
@@ -220,14 +314,32 @@ st.write(
     layer.
     """
 )
-st.image(
-    get_image_path(__file__, "implant.png"),
-    caption="3D printed wrist joint implant",
+
+all_tabs(
+    lambda: st.image(
+        get_image_path(__file__, "implant.png"),
+        caption="3D printed wrist joint implant",
+    )
 )
 
-st.header("What is nanoindentation?")
+all_tabs(lambda: st.header("What is nanoindentation?"))
 
-st.write(
+short.write(
+    """
+    In a nanoindentation test, a very small and hard tip whose mechanical properties are
+    known (frequently made of a very hard material like diamond) is pressed into a
+    sample whose properties are unknown. The load placed on the indenter tip is
+    increased as the tip penetrates further into the specimen and soon reaches a
+    user-defined value. At this point, the load may be held constant for a period or
+    removed.
+
+    While indenting, various parameters such as load and depth of penetration can be
+    measured. A record of these values can be plotted on a graph to create a
+    load-displacement curve (such as the one shown in the figure below). These curves
+    can be used to extract mechanical properties of the material.
+    """
+)
+full.write(
     """
     In an indentation test, a hard tip whose mechanical properties are known (frequently
     made of a very hard material like diamond) is pressed into a sample whose properties
@@ -262,8 +374,10 @@ st.write(
     """
 )
 
-st.image(
-    get_image_path(__file__, "load_disp_indentation.svg"),
-    caption="Indentation curve",
-    use_column_width="always",
+all_tabs(
+    lambda: st.image(
+        get_image_path(__file__, "load_disp_indentation.svg"),
+        caption="Indentation curve",
+        use_column_width="always",
+    )
 )
