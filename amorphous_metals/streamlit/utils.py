@@ -1,5 +1,6 @@
 """Streamlit common utilities."""
 
+from importlib.metadata import version
 from pathlib import Path
 from typing import Callable, Sequence
 
@@ -9,7 +10,7 @@ from streamlit.delta_generator import DeltaGenerator
 
 MENU_ITEMS: MenuItems = {
     "Report a bug": "https://github.com/KasiaFoszcz/AmorphousMetals/issues",
-    "About": """
+    "About": f"""
         Data Science postgraduate project at Wroclaw University of Economics and
         Business by Katarzyna Foszcz under supervision of PhD Ryszard Zygała.
 
@@ -18,6 +19,8 @@ MENU_ITEMS: MenuItems = {
 
         Source code available on
         [GitHub](https://github.com/KasiaFoszcz/AmorphousMetals).
+
+        Version: {version("amorphous_metals")}
         """,
 }
 

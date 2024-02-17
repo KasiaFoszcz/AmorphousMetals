@@ -24,6 +24,7 @@ RUN apt-get update \
 # Add example data and Python sources.
 COPY --link data/ /app/data/
 COPY --link amorphous_metals/ /app/amorphous_metals/
+RUN poetry install --only main,streamlit
 
 # Set the default environment.
 ENV STREAMLIT_SERVER_PORT=8501 \
