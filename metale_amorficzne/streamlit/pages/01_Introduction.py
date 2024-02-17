@@ -2,7 +2,9 @@
 
 import streamlit as st
 
-from metale_amorficzne.streamlit.utils import get_image_path
+from metale_amorficzne.streamlit.utils import MENU_ITEMS, get_image_path
+
+st.set_page_config(menu_items=MENU_ITEMS)
 
 st.title("Introduction")
 

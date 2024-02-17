@@ -10,7 +10,9 @@ import streamlit as st
 
 from metale_amorficzne import utils
 from metale_amorficzne.convert import convert_raw_to_df
-from metale_amorficzne.streamlit.utils import show_markdown_sibling
+from metale_amorficzne.streamlit.utils import MENU_ITEMS, show_markdown_sibling
+
+st.set_page_config(menu_items=MENU_ITEMS)
 
 st.title("Data")
 

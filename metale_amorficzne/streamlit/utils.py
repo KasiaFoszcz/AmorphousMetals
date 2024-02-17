@@ -3,6 +3,21 @@
 from pathlib import Path
 
 import streamlit as st
+from streamlit.commands.page_config import MenuItems
+
+MENU_ITEMS: MenuItems = {
+    "Report a bug": "https://github.com/KasiaFoszcz/AmorphousMetals/issues",
+    "About": """
+        Data Science postgraduate project at Wroclaw University of Economics and
+        Business by Katarzyna Foszcz under supervision of PhD Ryszard Zygała.
+
+        Data from Michał Biały's research of amorphous metals at Wroclaw University of
+        Science and Technology.
+
+        Source code available on
+        [GitHub](https://github.com/KasiaFoszcz/AmorphousMetals).
+        """,
+}
 
 
 def get_markdown_sibling(source_name: str, subpage: str | None = None):
