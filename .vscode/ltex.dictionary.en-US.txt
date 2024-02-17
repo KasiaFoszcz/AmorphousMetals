@@ -1,1 +1,6 @@
 DBSCAN
+Biały
+Foszcz
+Ryszard
+Zygała
+Streamlit

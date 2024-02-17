@@ -160,6 +160,11 @@ cython_debug/
 #.idea/
 
 # Custom
-data/
+data/**
+!data/ZrTi alloys/
+!data/ZrTi alloys/s3_matryca15_25mN_spacing5um.TXT
+
 output/
-notebooks/
+
+notebooks/*
+!notebooks/process_image.ipynb
