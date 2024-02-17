@@ -15,7 +15,10 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
         curl \
-    && pip install poetry \
+        git \
+    && pip install poetry poetry-dynamic-versioning \
+    # Needed for dynamic versioning to initialize correctly on install.
+    && git init \
     && poetry install --no-root --only main,streamlit \
     && apt-get remove -y build-essential \
     && apt-get autoremove -y \
@@ -24,7 +27,10 @@ RUN apt-get update \
 # Add example data and Python sources.
 COPY --link data/ /app/data/
 COPY --link amorphous_metals/ /app/amorphous_metals/
-RUN poetry install --only main,streamlit
+
+# Install with a proper package version.
+RUN --mount=type=bind,source=.git,target=/app/.git \
+    poetry install --only main,streamlit
 
 # Set the default environment.
 ENV STREAMLIT_SERVER_PORT=8501 \
