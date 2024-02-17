@@ -5,7 +5,7 @@ from typing import Callable
 import streamlit as st
 from streamlit.delta_generator import DeltaGenerator
 
-from metale_amorficzne.streamlit.utils import MENU_ITEMS, for_tabs, get_image_path
+from amorphous_metals.streamlit.utils import MENU_ITEMS, for_tabs, get_image_path
 
 st.set_page_config(menu_items=MENU_ITEMS)
 

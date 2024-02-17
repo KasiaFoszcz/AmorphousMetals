@@ -18,7 +18,7 @@ or 10×10 points in distances ranging from 5 to 20 um on a machine *CSM
 Instruments NHT2*.
 
 <!-- image_split -->
-![Clustering process](metale_amorficzne/streamlit/Home/process.svg)
+![Clustering process](amorphous_metals/streamlit/Home/process.svg)
 <!-- image_split -->
 
 1. Amorphous metal sample under microscope after nanoindentation. Some metal

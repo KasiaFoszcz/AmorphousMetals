@@ -13,7 +13,7 @@ services:
     ports:
       - 8501:8501
     volumes:
-      - ./metale_amorficzne:/app/metale_amorficzne:ro
+      - ./amorphous_metals:/app/amorphous_metals:ro
       - ./data:/app/data:ro
     environment:
       STREAMLIT_SERVER_RUN_ON_SAVE: True
