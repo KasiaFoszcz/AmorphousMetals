@@ -2,7 +2,7 @@
 
 import streamlit as st
 
-from metale_amorficzne.streamlit.utils import (
+from amorphous_metals.streamlit.utils import (
     MENU_ITEMS,
     get_image_path,
     get_markdown_sibling,

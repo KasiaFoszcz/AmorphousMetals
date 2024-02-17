@@ -1,7 +1,7 @@
 POETRY_RUN := poetry run
 DOCKER_COMPOSE := docker compose
 
-ENTRYPOINT := metale_amorficzne/streamlit/Home.py
+ENTRYPOINT := amorphous_metals/streamlit/Home.py
 DATA_PATH := data/
 DOCKER_TAG := edge
 

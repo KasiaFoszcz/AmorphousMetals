@@ -8,7 +8,7 @@
             "name": "Python: Current File",
             "type": "debugpy",
             "request": "launch",
-            "module": "metale_amorficzne.${fileBasenameNoExtension}",
+            "module": "amorphous_metals.${fileBasenameNoExtension}",
             "console": "integratedTerminal",
             "justMyCode": true,
         },
@@ -16,7 +16,7 @@
             "name": "Python: Convert source files",
             "type": "debugpy",
             "request": "launch",
-            "module": "metale_amorficzne.convert",
+            "module": "amorphous_metals.convert",
             "console": "integratedTerminal",
             "justMyCode": true,
             "args": [

@@ -1,1 +1,1 @@
-metale_amorficzne/streamlit/Home.md
+amorphous_metals/streamlit/Home.md

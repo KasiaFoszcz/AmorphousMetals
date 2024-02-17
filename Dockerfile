@@ -23,7 +23,7 @@ RUN apt-get update \
 
 # Add example data and Python sources.
 COPY --link data/ /app/data/
-COPY --link metale_amorficzne/ /app/metale_amorficzne/
+COPY --link amorphous_metals/ /app/amorphous_metals/
 
 # Set the default environment.
 ENV STREAMLIT_SERVER_PORT=8501 \
@@ -35,4 +35,4 @@ ENV STREAMLIT_SERVER_PORT=8501 \
 # Run the Streamlit app.
 EXPOSE ${STREAMLIT_SERVER_PORT}
 HEALTHCHECK CMD curl --fail http://localhost:${STREAMLIT_SERVER_PORT}/_stcore/health
-ENTRYPOINT ["poetry", "run", "python3", "-m", "streamlit", "run", "metale_amorficzne/streamlit/Home.py"]
+ENTRYPOINT ["poetry", "run", "python3", "-m", "streamlit", "run", "amorphous_metals/streamlit/Home.py"]

@@ -8,8 +8,8 @@ import scipy.spatial.distance as spd
 import streamlit as st
 from matplotlib import pyplot as plt
 
-from metale_amorficzne import utils
-from metale_amorficzne.streamlit.utils import MENU_ITEMS, show_markdown_sibling
+from amorphous_metals import utils
+from amorphous_metals.streamlit.utils import MENU_ITEMS, show_markdown_sibling
 
 st.set_page_config(menu_items=MENU_ITEMS)
 
