@@ -114,3 +114,4 @@ with input:
             unsafe_allow_html=True,
         )
         col2.page_link("pages/03_Hierarchical clustering.py")
+        col2.page_link("pages/04_K-means clustering.py")
