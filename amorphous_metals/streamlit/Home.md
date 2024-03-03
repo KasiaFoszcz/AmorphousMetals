@@ -1,4 +1,4 @@
-# Amorphous Metals Analyzer
+# Metal Phases Analyzer
 
 This application clusters metal phases and outputs the mechanical properties of
 each phase. It was developed for researchers from Wroclaw University of Science
@@ -15,13 +15,13 @@ knowledge for this project ❤️
 After a sample of amorphous metal is produced, it undergoes nanoindentation
 study. A polished metal sample is very precisely indented in a matrix of 15×15
 or 10×10 points in distances ranging from 5 to 20 um on a machine *CSM
-Instruments NHT2*.
+Instruments NHT²*.
 
 <!-- image_split -->
 ![Clustering process](amorphous_metals/streamlit/Home/process.svg)
 <!-- image_split -->
 
-1. Amorphous metal sample under microscope after nanoindentation. Some metal
+1. A metal sample under microscope after nanoindentation. Some metal
    phases are visible (not necessarily all, as some may be found under the
    surface).
 2. Visualization of metal feature (here HIT, hardness). The analyzer takes
