@@ -1,12 +1,16 @@
 """Streamlit common utilities."""
 
+from dataclasses import dataclass
 from importlib.metadata import version
 from pathlib import Path
 from typing import Callable, Sequence
 
+import pandas as pd
 import streamlit as st
 from streamlit.commands.page_config import MenuItems
 from streamlit.delta_generator import DeltaGenerator
+
+from amorphous_metals import utils
 
 MENU_ITEMS: MenuItems = {
     "Report a bug": "https://github.com/KasiaFoszcz/AmorphousMetals/issues",
@@ -90,3 +94,52 @@ def for_tabs(
         with tab:
             results.append(streamlit_func())
     return tuple(results)
+
+
+@dataclass
+class SelectedData:
+    """Currently selected data for clustering."""
+
+    df: pd.DataFrame
+    reference_name: str
+    features: set[str]
+    normalize_data: bool
+
+
+def data_selection() -> SelectedData | None:
+    """Show common streamlit components to define clustering input.
+
+    Returns:
+        SelectedData or None if no data is defined.
+    """
+    if "df" not in st.session_state:
+        st.columns(3)[1].page_link(
+            "pages/02_Data.py", label="Please first upload data here"
+        )
+        st.stop()
+
+    df: pd.DataFrame = st.session_state.df
+    reference_name = st.selectbox("Select reference feature:", df.columns)
+    feature_set = st.selectbox(
+        "Select feature set:", ("defaults", "all", "all + XY", "custom")
+    )
+    match feature_set:
+        case "custom":
+            features = st.multiselect(
+                "Select features:", df.columns, utils.DEFAULT_COLUMNS
+            )
+        case "defaults":
+            features = list(utils.DEFAULT_COLUMNS)
+        case "all + XY":
+            features = list(df.columns)
+        case _:
+            features = list(df.columns)
+            features.remove("X [mm]")
+            features.remove("Y [mm]")
+    st.write("Selected features: *" + "*, *".join(features) + "*.")
+    normalize_data = st.toggle("Normalize data", True)
+
+    if reference_name is None:
+        return None
+
+    return SelectedData(df, reference_name, set(features), normalize_data)
