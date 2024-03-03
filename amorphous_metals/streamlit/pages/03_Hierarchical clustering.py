@@ -12,6 +12,7 @@ from amorphous_metals.streamlit.utils import (
     MENU_ITEMS,
     SelectedData,
     data_selection,
+    prepare_df_for_clustering,
     show_markdown_sibling,
 )
 
@@ -33,11 +34,7 @@ def hierarchical_clustering(
     # Prepare "clusterable" data.
     hole_map = utils.generate_hole_map(data.df)
     df_clust = utils.filter_holes(data.df)
-    df_clust = (
-        (df_clust - df_clust.mean()) / df_clust.std()
-        if data.normalize_data
-        else df_clust
-    )
+    df_clust = prepare_df_for_clustering(data)
 
     # Prepare figure.
     fig = plt.figure()

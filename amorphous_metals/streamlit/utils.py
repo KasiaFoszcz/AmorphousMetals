@@ -143,3 +143,17 @@ def data_selection() -> SelectedData | None:
         return None
 
     return SelectedData(df, reference_name, set(features), normalize_data)
+
+
+def prepare_df_for_clustering(data: SelectedData) -> pd.DataFrame:
+    """Prepare data frame for clustering.
+
+    Arguments:
+        data -- data input.
+
+    Returns:
+        Prepared data frame.
+    """
+    return (
+        (data.df - data.df.mean()) / data.df.std() if data.normalize_data else data.df
+    )
