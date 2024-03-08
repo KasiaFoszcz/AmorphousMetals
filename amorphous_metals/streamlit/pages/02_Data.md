@@ -5,13 +5,13 @@
   of thin coins. Indentation was performed on each sample in a matrix of 15×15
   or 10×10 points in distances ranging from 5 to 20 um, force applied ranging
   from 25mN to 200mN.
-- data output from nanoindentation machine *CSM Instruments NHT2* comes as
+- data output from nanoindentation machine *CSM Instruments NHT²* comes as
   `.TXT` file and contains calculations of 21 parameters for each indentation
   point.
 
 ## Analysis Methods and Results
 
-I prepared a parser for output files from the *CSM Instruments NHT2*
+I prepared a parser for output files from the *CSM Instruments NHT²*
 nanoindentation machine. Initially I tried classification, but after a while of
 trials with decision trees, I realised that in this case clustering should be
 performed, as the data in unlabelled.

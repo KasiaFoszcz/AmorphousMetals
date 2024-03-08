@@ -27,12 +27,12 @@ all_tabs(
 )
 short.write(
     """
-    The _Amorphous Metals Analyzer_ is specifically designed for researchers at Wroclaw
+    The _Metal Phases Analyzer_ is specifically designed for researchers at Wroclaw
     University of Science and Technology. By utilizing this tool, researchers can obtain
     more accurate and faster results regarding the number and properties of phases
-    present in a given amorphous metal sample.
+    present in a given sample.
 
-    The Amorphous Metals Analyzer is integrated with a nanoindentation machine, which is
+    The Metal Phases Analyzer is integrated with a nanoindentation machine, which is
     capable of measuring various mechanical properties of the sample. The results
     obtained from the nanoindentation machine are fed into the analyzer. Then, the
     application performs clustering of the different metal phases present in the sample
@@ -43,19 +43,19 @@ short.write(
 )
 full.write(
     """
-    The purpose of this study is to develop an _Amorphous Metals Analyzer_ specifically
+    The purpose of this study is to develop an _Metal Phases Analyzer_ specifically
     designed for researchers at Wroclaw University of Science and Technology. This
     analyzer aims to enhance the precision and efficiency of evaluating produced
     amorphous materials. By utilizing this tool, researchers can obtain more accurate
     and faster results regarding the number and properties of phases present in a given
-    amorphous metal sample.
+    metal sample.
     """
 )
 
 full.header("Integration with Nanoindentation Machine")
 full.write(
     """
-    The Amorphous Metals Analyzer is integrated with a nanoindentation machine, which is
+    The Metal Phases Analyzer is integrated with a nanoindentation machine, which is
     capable of measuring various mechanical properties of the sample. The results
     obtained from the nanoindentation machine are fed into the analyzer, allowing for a
     comprehensive analysis of the material.
@@ -68,15 +68,14 @@ full.write(
     Once the data from the nanoindentation machine is inputted into the analyzer, the
     application performs clustering of the different metal phases present in the sample.
 
-    Furthermore, the Amorphous Metals Analyzer calculates key mechanical properties for
-    each phase identified. These mechanical properties help researchers assess the
-    quality and performance of the amorphous metal, providing valuable insights for
-    further analysis and experimentation.
+    Furthermore, the Metal Phases Analyzer calculates key mechanical properties for each
+    phase identified. These mechanical properties help researchers assess the quality
+    and performance of the metal, providing valuable insights for further analysis and
+    experimentation.
 
-    Overall, the Amorphous Metals Analyzer serves as a tool for researchers at Wroclaw
+    Overall, the Metal Phases Analyzer serves as a tool for researchers at Wroclaw
     University of Science and Technology, enabling them to conduct faster evaluations of
-    amorphous materials, contributing to advancements in material research and
-    development.
+    materials, contributing to advancements in material research and development.
     """
 )
 
