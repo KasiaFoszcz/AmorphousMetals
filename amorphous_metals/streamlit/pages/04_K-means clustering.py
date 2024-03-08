@@ -3,6 +3,7 @@
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import streamlit as st
 from sklearn.cluster import KMeans
 from streamlit_image_coordinates import streamlit_image_coordinates
@@ -27,6 +28,20 @@ with method:
 
 
 @st.cache_data
+def get_row_from_point(df: pd.DataFrame, point: tuple[int, int]):
+    """Get row from data frame based on image coordinates.
+
+    Arguments:
+        df -- source data frame.
+        point -- point coordinates (x, y).
+
+    Returns:
+        Selected row from df.
+    """
+    return df.iloc[point[0] + point[1] * utils.image_width(df)]
+
+
+@st.cache_data
 def kmeans_clustering(data: SelectedData, points: list[tuple[int, int]]):
     """Perform k-means clustering.
 
@@ -34,14 +49,12 @@ def kmeans_clustering(data: SelectedData, points: list[tuple[int, int]]):
         data -- data input.
         points -- selected initial points.
     """
-    clust_df = prepare_df_for_clustering(data)
-
+    df_clust = prepare_df_for_clustering(data)
     image_width = utils.image_width(data.df)
-    rows = np.array([data.df.iloc[image_width * y + x].to_numpy() for x, y in points])
-    clustered = (
-        KMeans(n_clusters=len(rows), init=rows, max_iter=2000)
-        .fit(clust_df)
-        .labels_.reshape((image_width, -1))
+
+    rows = np.array([get_row_from_point(data.df, point).to_numpy() for point in points])
+    clusters = (
+        KMeans(n_clusters=len(rows), init=rows, max_iter=2000).fit(df_clust).labels_
     )
 
     # Prepare figure.
@@ -50,7 +63,7 @@ def kmeans_clustering(data: SelectedData, points: list[tuple[int, int]]):
 
     clust_plot = fig.add_subplot(1, 1, 1)
     clust_plot.set_axis_off()
-    clust_plot.imshow(clustered)
+    clust_plot.imshow(utils.fill_holes(data.df, clusters).reshape((image_width, -1)))
 
     # Show plot in Streamlit.
     st.pyplot(fig)
@@ -60,20 +73,24 @@ with results:
     selected_data = data_selection()
     if selected_data is None:
         st.stop()
-
     assert selected_data is not None
-    reference = selected_data.df[[selected_data.reference_name]].to_numpy()
+
+    reference = utils.filter_holes(
+        selected_data.df[[selected_data.reference_name]]
+    ).to_numpy()
 
     # Normalization.
     reference -= np.min(reference)
     reference /= np.max(reference)
 
     # Map to matplotlib colors.
-    REP_COUNT = 20
+    REP_COUNT = 22
     reference = (
-        np.delete(mpl.colormaps["viridis"](reference), 3, 2).reshape(
-            (utils.image_width(selected_data.df), -1, 3)
-        )
+        utils.fill_holes(
+            selected_data.df,
+            np.delete(mpl.colormaps["viridis"](reference), 3, 2),
+            fill_with=np.array([[0, 0, 0]]),
+        ).reshape((utils.image_width(selected_data.df), -1, 3))
         * 256
     ).astype(np.uint8)
 
@@ -95,17 +112,19 @@ with results:
 
         if value is not None:
             point = (value["x"] // REP_COUNT, value["y"] // REP_COUNT)
-            if point not in st.session_state.points:
-                st.session_state.points.append(point)
-            else:
+            if point in st.session_state.points:
                 st.session_state.points.remove(point)
-            st.rerun()
+                st.rerun()
+            elif get_row_from_point(selected_data.df, point).isnull().any():
+                st.warning("You cannot choose a point that is a hole.")
+            else:
+                st.session_state.points.append(point)
+                st.rerun()
 
         # Summary of chosen points.
         summary: list[str] = []
         for index, point in enumerate(st.session_state.points):
-            row_index = point[0] + point[1] * utils.image_width(selected_data.df)
-            row = selected_data.df.iloc[row_index]
+            row = get_row_from_point(selected_data.df, point)
             ref_name = selected_data.reference_name
             summary.append(
                 f"{index+1}. Value for point x = {point[0]}, y = {point[1]}: "

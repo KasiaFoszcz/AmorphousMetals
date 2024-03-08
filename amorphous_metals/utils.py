@@ -37,7 +37,7 @@ def has_holes(df: pd.DataFrame) -> tuple[bool, ...]:
     Returns:
         If a row has a hole, the value is True.
     """
-    return tuple(any(row.isna()) for _, row in df.iterrows())
+    return tuple(df.isnull().any(axis=1))
 
 
 def filter_holes(df: pd.DataFrame) -> pd.DataFrame:
@@ -52,10 +52,7 @@ def filter_holes(df: pd.DataFrame) -> pd.DataFrame:
     return df[~df.isnull().any(axis=1)]
 
 
-HoleMap = tuple[tuple[int, int], ...]
-
-
-def generate_hole_map(df: pd.DataFrame) -> HoleMap:
+def generate_hole_map(df: pd.DataFrame) -> tuple[int, ...]:
     """Generate map of clustering to original index.
 
     If the data frame has some holes (NaN values), they shouldn't be passed to
@@ -67,26 +64,19 @@ def generate_hole_map(df: pd.DataFrame) -> HoleMap:
     Returns:
         Mapping of clustering result index to original data frame index.
     """
-    good_row_i = 0
-    hole_map: list[tuple[int, int]] = []
-    for row_i, row in df.iterrows():
-        assert isinstance(row_i, int), "Row index is not an integer."
-        if not any(row.isna()):
-            hole_map.append((good_row_i, row_i))
-            good_row_i += 1
-    return tuple(hole_map)
+    return tuple(row_i for row_i, row in df.iterrows() if not any(row.isnull()))  # type: ignore
 
 
 def fill_holes(
+    source_df: pd.DataFrame,
     clustered: npt.NDArray[Any],
-    hole_map: HoleMap,
     fill_with: Any = math.nan,
 ) -> npt.NDArray[Any]:
     """Fill holes in clustering result.
 
     Arguments:
+        source_df -- source data frame (with holes).
         clustered -- clustering result.
-        hole_map -- hole map for the data frame (generated using `generate_hole_map()`).
 
     Keyword Arguments:
         fill_with -- value used to fill the holes with (default: {math.nan}).
@@ -94,7 +84,7 @@ def fill_holes(
     Returns:
         Clustered data with holes filled.
     """
-    output = np.full(max(dst for _, dst in hole_map) + 1, fill_with)
-    for src, dst in hole_map:
+    output = [fill_with for _ in range(len(source_df))]
+    for src, dst in enumerate(generate_hole_map(source_df)):
         output[dst] = clustered[src]
-    return output
+    return np.array(output)

@@ -154,6 +154,9 @@ def prepare_df_for_clustering(data: SelectedData) -> pd.DataFrame:
     Returns:
         Prepared data frame.
     """
+    without_holes = utils.filter_holes(data.df)
     return (
-        (data.df - data.df.mean()) / data.df.std() if data.normalize_data else data.df
+        (without_holes - without_holes.mean()) / without_holes.std()
+        if data.normalize_data
+        else without_holes
     )

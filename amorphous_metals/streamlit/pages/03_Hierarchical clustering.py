@@ -32,9 +32,8 @@ def hierarchical_clustering(
 ):
     """Perform hierarchical clustering."""
     # Prepare "clusterable" data.
-    hole_map = utils.generate_hole_map(data.df)
-    df_clust = utils.filter_holes(data.df)
     df_clust = prepare_df_for_clustering(data)
+    image_width = utils.image_width(data.df)
 
     # Prepare figure.
     fig = plt.figure()
@@ -45,11 +44,7 @@ def hierarchical_clustering(
     ref_plot = fig.add_subplot(1, 2, 1)
     ref_plot.set_title(f"Reference: {data.reference_name}")
     ref_plot.set_axis_off()
-    ref_plot.imshow(
-        data.df[data.reference_name]
-        .to_numpy()
-        .reshape((utils.image_width(data.df), -1))
-    )
+    ref_plot.imshow(data.df[data.reference_name].to_numpy().reshape((image_width, -1)))
 
     # Perform clustering.
     clusters = sph.fcluster(
@@ -62,9 +57,7 @@ def hierarchical_clustering(
     clust_plot = fig.add_subplot(1, 2, 2)
     clust_plot.set_title("Clustered")
     clust_plot.set_axis_off()
-    clust_plot.imshow(
-        utils.fill_holes(clusters, hole_map).reshape((utils.image_width(data.df), -1))
-    )
+    clust_plot.imshow(utils.fill_holes(data.df, clusters).reshape((image_width, -1)))
 
     # Show plot in Streamlit.
     st.pyplot(fig)
