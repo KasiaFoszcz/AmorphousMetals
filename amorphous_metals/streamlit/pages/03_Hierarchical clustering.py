@@ -1,7 +1,5 @@
 """Hierarchical clustering Streamlit subpage."""
 
-import matplotlib as mpl
-import numpy as np
 import scipy.cluster.hierarchy as sph
 import scipy.spatial.distance as spd
 import streamlit as st
@@ -10,7 +8,9 @@ from matplotlib import pyplot as plt
 from amorphous_metals import utils
 from amorphous_metals.streamlit.utils import (
     MENU_ITEMS,
+    ClusteringResult,
     SelectedData,
+    clustering_summary,
     data_selection,
     prepare_df_for_clustering,
     show_markdown_sibling,
@@ -29,7 +29,7 @@ with method:
 @st.cache_data
 def hierarchical_clustering(
     data: SelectedData, method: str, metric: str, cluster_count: int
-):
+) -> ClusteringResult:
     """Perform hierarchical clustering."""
     # Prepare "clusterable" data.
     df_clust = prepare_df_for_clustering(data)
@@ -62,26 +62,7 @@ def hierarchical_clustering(
     # Show plot in Streamlit.
     st.pyplot(fig)
 
-    # Show cluster summary.
-    ## Generate cluster colors used in plot.
-    cluster_colors = np.delete(
-        mpl.colormaps["viridis"](np.linspace(0, 1, cluster_count)), 3, 1
-    )
-
-    ## Generate cluster descriptions for points in clusters.
-    cluster_desc = tuple(
-        data.df.iloc[[i for i, val in enumerate(clusters) if val == group]].describe()
-        for group in range(1, cluster_count + 1)
-    )
-
-    ## Show results in Streamlit tabs.
-    cluster_tabs = st.tabs(tuple(f"Cluster {i}" for i in range(1, cluster_count + 1)))
-    for tab, desc, color in zip(cluster_tabs, cluster_desc, cluster_colors):
-        with tab:
-            st.image(color.reshape((1, 1, 3)), width=24)
-            st.dataframe(desc)
-
-    return cluster_desc
+    return ClusteringResult(data.df, clusters)
 
 
 with results:
@@ -107,4 +88,5 @@ with results:
         st.stop()
 
     if method is not None and metric is not None:
-        hierarchical_clustering(selected_data, method, metric, cluster_count)
+        result = hierarchical_clustering(selected_data, method, metric, cluster_count)
+        clustering_summary(result)

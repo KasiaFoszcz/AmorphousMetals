@@ -11,7 +11,9 @@ from streamlit_image_coordinates import streamlit_image_coordinates
 from amorphous_metals import utils
 from amorphous_metals.streamlit.utils import (
     MENU_ITEMS,
+    ClusteringResult,
     SelectedData,
+    clustering_summary,
     data_selection,
     prepare_df_for_clustering,
     show_markdown_sibling,
@@ -42,7 +44,9 @@ def get_row_from_point(df: pd.DataFrame, point: tuple[int, int]):
 
 
 @st.cache_data
-def kmeans_clustering(data: SelectedData, points: list[tuple[int, int]]):
+def kmeans_clustering(
+    data: SelectedData, points: list[tuple[int, int]]
+) -> ClusteringResult:
     """Perform k-means clustering.
 
     Arguments:
@@ -68,6 +72,8 @@ def kmeans_clustering(data: SelectedData, points: list[tuple[int, int]]):
     # Show plot in Streamlit.
     st.pyplot(fig)
 
+    return ClusteringResult(data.df, clusters)
+
 
 with results:
     selected_data = data_selection()
@@ -89,9 +95,9 @@ with results:
         utils.fill_holes(
             selected_data.df,
             np.delete(mpl.colormaps["viridis"](reference), 3, 2),
-            fill_with=np.array([[0, 0, 0]]),
+            fill_with=np.array([[1, 1, 1]]),
         ).reshape((utils.image_width(selected_data.df), -1, 3))
-        * 256
+        * 255
     ).astype(np.uint8)
 
     # Color selected points red.
@@ -104,7 +110,7 @@ with results:
     # Upscale the reference image.
     reference = np.repeat(np.repeat(reference, REP_COUNT, 0), REP_COUNT, 1)
 
-    reference_col, reference_summary_col = st.columns(2)
+    reference_col, clust_result_col = st.columns(2)
 
     with reference_col:
         # Show the image with coordinate capture.
@@ -137,8 +143,9 @@ with results:
             st.session_state.points = []
             st.rerun()
 
-    with reference_summary_col:
-        if len(st.session_state.points) == 0:
-            st.write("Select points for clustering in the image.")
-        else:
-            kmeans_clustering(selected_data, st.session_state.points)
+    if len(st.session_state.points) == 0:
+        clust_result_col.write("Select points for clustering in the image.")
+    else:
+        with clust_result_col:
+            result = kmeans_clustering(selected_data, st.session_state.points)
+        clustering_summary(result)
