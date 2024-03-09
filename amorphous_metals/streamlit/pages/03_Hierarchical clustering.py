@@ -40,9 +40,7 @@ def hierarchical_clustering(
 
     # Perform clustering.
     clusters = sph.fcluster(
-        sph.linkage(df_clust[[*data.features]], method, metric),
-        cluster_count,
-        "maxclust",
+        sph.linkage(df_clust, method, metric), cluster_count, "maxclust"
     )
 
     # Show clustering result.
