@@ -163,6 +163,8 @@ cython_debug/
 data/**
 !data/ZrTi alloys/
 !data/ZrTi alloys/s3_matryca15_25mN_spacing5um.TXT
+!data/ZrCu alloys/
+!data/ZrCu alloys/Be0_matryca15_50mN_spacing7um_strefa_przejsciowa.TXT
 
 output/
 

@@ -4,8 +4,8 @@ I read the article and used insights from the author to prepare a prompt for my
 data: [*How I Won Singapore’s GPT-4 Prompt Engineering Competition. A deep dive
 into the strategies I learned for harnessing the power of Large Language Models
 (LLMs)*][LLM] I limited the data input to four chosen parameters for one metal
-sample. The result was not completely wrong, not precise though to continue
-trials with this method.
+sample called *Be0_matryca15_50mN_spacing7um_strefa_przejsciowa*. The result was
+not completely wrong, not precise though to continue trials with this method.
 
 [LLM]: https://towardsdatascience.com/how-i-won-singapores-gpt-4-prompt-engineering-competition-34c195a93d41#183c
 

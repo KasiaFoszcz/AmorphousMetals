@@ -1,9 +1,17 @@
 """Other methods description Streamlit subpage."""
 
+import os
+from pathlib import Path
+
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+import scipy
 import streamlit as st
+from sklearn.cluster import OPTICS
 
+from amorphous_metals import utils
+from amorphous_metals.convert import convert_raw_to_df
 from amorphous_metals.streamlit.utils import MENU_ITEMS, show_markdown_sibling
 
 st.set_page_config(menu_items=MENU_ITEMS)
@@ -13,10 +21,61 @@ show_markdown_sibling(__file__)
 
 gpt, optics = st.tabs(["ChatGPT", "OPTICS"])
 
-with gpt:
-    show_markdown_sibling(__file__, "ChatGPT")
 
-    st.write("Given this three clusters, I visualized them with matplotlib:")
+def plot_reference(ax) -> pd.DataFrame | None:
+    """Plot a reference on Matplotlib axis and return reference data frame."""
+    ax.set_axis_off()
+    ax.set_aspect(1)
+    try:
+        ref_df = convert_raw_to_df(
+            Path(
+                os.getenv(
+                    "METAL_DATA_PATH", Path(__file__).parent.parent.parent / "data"
+                )
+            )
+            / "ZrCu alloys/Be0_matryca15_50mN_spacing7um_strefa_przejsciowa.TXT"
+        )
+        ax.imshow(
+            ref_df["HIT (O&P) [MPa]"]
+            .to_numpy()
+            .reshape((utils.image_width(ref_df), -1))
+        )
+        return ref_df
+    except FileNotFoundError:
+        ax.text(
+            0.5,
+            0.5,
+            "Reference data file not found!",
+            horizontalalignment="center",
+            verticalalignment="center",
+            color="red",
+        )
+
+    return None
+
+
+@st.cache_data
+def plot_gpt_reference():
+    """Generate ChatGPT clustering reference plot."""
+    fig, ax = plt.subplots(1, 3)
+    fig.canvas.header_visible = False  # type: ignore
+    fig.tight_layout()
+
+    # Side plots are used for alignment.
+    ax[0].set_aspect(1)
+    ax[0].set_axis_off()
+    ax[2].set_aspect(1)
+    ax[2].set_axis_off()
+
+    # Central reference plot.
+    plot_reference(ax[1])
+
+    return fig
+
+
+@st.cache_data
+def plot_gpt_clustering():
+    """Generate ChatGPT clustering result plot."""
     fig = plt.figure(figsize=(14, 7))
     fig.canvas.header_visible = False  # type: ignore
     fig.tight_layout()
@@ -34,9 +93,21 @@ with gpt:
 
         for pixel in group:
             image[pixel] = 1
-        fig.add_subplot(1, len(groups), group_i + 1).imshow(image.reshape(15, -1))
+        sub = fig.add_subplot(1, len(groups), group_i + 1)
+        sub.set_axis_off()
+        sub.imshow(image.reshape(15, -1))
 
-    st.pyplot(fig)
+    return fig
+
+
+with gpt:
+    show_markdown_sibling(__file__, "ChatGPT")
+
+    st.write("Reference image of HIT feature (hardness):")
+    st.pyplot(plot_gpt_reference())
+
+    st.write("Given this three clusters, I visualized them with matplotlib:")
+    st.pyplot(plot_gpt_clustering())
     st.write(
         """
         Even though one can make out the distinct diagonal line (starting at point 3 and
@@ -45,5 +116,38 @@ with gpt:
         """
     )
 
+
+@st.cache_data
+def plot_optics():
+    """Generate OPTICS reference and clustering result plot."""
+    fig, ax = plt.subplots(1, 2)
+    fig.canvas.header_visible = False  # type: ignore
+    fig.tight_layout()
+
+    # Show reference image.
+    ax[0].set_title("Reference: HIT (O&P) [MPa]")
+    ref_df = plot_reference(ax[0])
+
+    # Run OPTICS clustering with seuclidean distance metric.
+    if ref_df is not None:
+        clust = OPTICS(
+            min_samples=10, xi=0.0001, min_cluster_size=10, metric="precomputed"
+        )
+        clust.fit(
+            scipy.spatial.distance.squareform(
+                scipy.spatial.distance.pdist(ref_df, metric="seuclidean")
+            )
+        )
+
+        ax[1].imshow(clust.labels_.reshape((15, -1)))
+
+    ax[1].set_title("Clustered")
+    ax[1].set_axis_off()
+    ax[1].set_aspect(1)
+
+    return fig
+
+
 with optics:
     show_markdown_sibling(__file__, "OPTICS")
+    st.pyplot(plot_optics())
