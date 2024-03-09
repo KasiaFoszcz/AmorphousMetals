@@ -48,7 +48,12 @@ def kmeans_clustering(
     df_clust = st_utils.prepare_df_for_clustering(data)
     image_width = utils.image_width(data.df)
 
-    rows = np.array([get_row_from_point(data.df, point).to_numpy() for point in points])
+    rows = np.array(
+        [
+            get_row_from_point(data.df[[*data.features]], point).to_numpy()
+            for point in points
+        ]
+    )
     clusters = (
         KMeans(n_clusters=len(rows), init=rows, max_iter=2000).fit(df_clust).labels_
     )
