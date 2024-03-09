@@ -6,6 +6,8 @@ services:
     build: .
     ports:
       - 8501:8501
+    volumes:
+      - cache:/app/.streamlit/cache
 
   streamlit-local:
     image: ghcr.io/kasiafoszcz/amorphousmetals:${DOCKER_TAG:-edge}
@@ -15,5 +17,9 @@ services:
     volumes:
       - ./amorphous_metals:/app/amorphous_metals:ro
       - ./data:/app/data:ro
+      - cache:/app/.streamlit/cache
     environment:
       STREAMLIT_SERVER_RUN_ON_SAVE: True
+
+volumes:
+  cache:
