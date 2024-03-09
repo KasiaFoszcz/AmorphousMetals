@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from functools import cached_property
 from importlib.metadata import version
 from pathlib import Path
-from typing import Callable, Sequence
+from typing import Any, Callable, Sequence
 
 import matplotlib as mpl
 import numpy as np
@@ -31,6 +31,27 @@ MENU_ITEMS: MenuItems = {
         Version: {version("amorphous_metals")}
         """,
 }
+
+
+def default_st_cache(func: Callable[..., Any] | None = None, **kwargs):
+    """Cache data Streamlit convenience configuration decorator.
+
+    Can be used either directly on function, or with additional arguments for
+    `st.cache_data()`:
+
+    ```
+    @default_st_cache
+    def cached_func_1():
+        ...
+
+    @default_st_cache(show_spinner=False)
+    def cached_func_2():
+        ...
+    ```
+    """
+    if func is None:
+        return st.cache_data(persist="disk", max_entries=100, **kwargs)
+    return st.cache_data(persist="disk", max_entries=100, **kwargs)(func)
 
 
 def get_markdown_sibling(source_name: str, subpage: str | None = None):
@@ -181,7 +202,7 @@ class ClusteringResult:
         return utils.fill_holes(self.src_df, self.clusters)
 
 
-@st.cache_data
+@default_st_cache(show_spinner="Generating clustering summary…")
 def clustering_summary(clustering_result: ClusteringResult) -> tuple[pd.DataFrame, ...]:
     """Generate summary for clustering result and show it in Streamlit.
 

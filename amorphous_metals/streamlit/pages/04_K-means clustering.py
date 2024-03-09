@@ -15,6 +15,7 @@ from amorphous_metals.streamlit.utils import (
     SelectedData,
     clustering_summary,
     data_selection,
+    default_st_cache,
     prepare_df_for_clustering,
     show_markdown_sibling,
 )
@@ -29,7 +30,7 @@ with method:
     show_markdown_sibling(__file__)
 
 
-@st.cache_data
+@default_st_cache(show_spinner=False)
 def get_row_from_point(df: pd.DataFrame, point: tuple[int, int]):
     """Get row from data frame based on image coordinates.
 
@@ -43,7 +44,7 @@ def get_row_from_point(df: pd.DataFrame, point: tuple[int, int]):
     return df.iloc[point[0] + point[1] * utils.image_width(df)]
 
 
-@st.cache_data
+@default_st_cache(show_spinner="Performing K-means clustering")
 def kmeans_clustering(
     data: SelectedData, points: list[tuple[int, int]]
 ) -> ClusteringResult:

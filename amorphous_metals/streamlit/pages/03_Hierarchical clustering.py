@@ -12,6 +12,7 @@ from amorphous_metals.streamlit.utils import (
     SelectedData,
     clustering_summary,
     data_selection,
+    default_st_cache,
     prepare_df_for_clustering,
     show_markdown_sibling,
 )
@@ -26,7 +27,7 @@ with method:
     show_markdown_sibling(__file__)
 
 
-@st.cache_data
+@default_st_cache(show_spinner="Performing hierarchical clustering…")
 def hierarchical_clustering(
     data: SelectedData, method: str, metric: str, cluster_count: int
 ) -> ClusteringResult:
