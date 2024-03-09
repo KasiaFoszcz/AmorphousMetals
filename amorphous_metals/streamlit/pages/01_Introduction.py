@@ -5,9 +5,9 @@ from typing import Callable
 import streamlit as st
 from streamlit.delta_generator import DeltaGenerator
 
-from amorphous_metals.streamlit.utils import MENU_ITEMS, for_tabs, get_image_path
+import amorphous_metals.streamlit.utils as st_utils
 
-st.set_page_config(menu_items=MENU_ITEMS)
+st.set_page_config(menu_items=st_utils.MENU_ITEMS)
 
 st.title("Introduction")
 
@@ -17,7 +17,7 @@ short, full = tabs
 
 def all_tabs(streamlit_func: Callable[[], DeltaGenerator]):
     """Execute `for_tabs()` for all tabs in this file."""
-    return for_tabs(streamlit_func, tabs)
+    return st_utils.for_tabs(streamlit_func, tabs)
 
 
 all_tabs(
@@ -105,7 +105,8 @@ full.write(
 
 all_tabs(
     lambda: st.image(
-        get_image_path(__file__, "comparison.png"), caption="Comparison of structures"
+        st_utils.get_image_path(__file__, "comparison.png"),
+        caption="Comparison of structures",
     )
 )
 
@@ -136,11 +137,11 @@ full.write(
 
 all_tabs(
     lambda: st.image(
-        get_image_path(__file__, "CrystalGrain.jpg"),
+        st_utils.get_image_path(__file__, "CrystalGrain.jpg"),
         caption="Microscopic image of traditional metal with grain boundaries",
     )
     and st.image(
-        get_image_path(__file__, "AmorphousMetal.jpg"),
+        st_utils.get_image_path(__file__, "AmorphousMetal.jpg"),
         caption="Microscopic image of an amorphous metal",
     )
 )
@@ -225,7 +226,7 @@ full.write(
 )
 
 full.image(
-    get_image_path(__file__, "coriolis.jpg"),
+    st_utils.get_image_path(__file__, "coriolis.jpg"),
     caption="A mass flow meter of the Coriolis type",
 )
 
@@ -316,7 +317,7 @@ full.write(
 
 all_tabs(
     lambda: st.image(
-        get_image_path(__file__, "implant.png"),
+        st_utils.get_image_path(__file__, "implant.png"),
         caption="3D printed wrist joint implant",
     )
 )
@@ -375,7 +376,7 @@ full.write(
 
 all_tabs(
     lambda: st.image(
-        get_image_path(__file__, "load_disp_indentation.svg"),
+        st_utils.get_image_path(__file__, "load_disp_indentation.svg"),
         caption="Indentation curve",
         use_column_width="always",
     )

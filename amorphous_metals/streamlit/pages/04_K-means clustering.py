@@ -8,29 +8,20 @@ import streamlit as st
 from sklearn.cluster import KMeans
 from streamlit_image_coordinates import streamlit_image_coordinates
 
+import amorphous_metals.streamlit.utils as st_utils
 from amorphous_metals import utils
-from amorphous_metals.streamlit.utils import (
-    MENU_ITEMS,
-    ClusteringResult,
-    SelectedData,
-    clustering_summary,
-    data_selection,
-    default_st_cache,
-    prepare_df_for_clustering,
-    show_markdown_sibling,
-)
 
-st.set_page_config(menu_items=MENU_ITEMS)
+st.set_page_config(menu_items=st_utils.MENU_ITEMS)
 
 st.title("K-means clustering")
 
 results, method = st.tabs(["Results", "Method"])
 
 with method:
-    show_markdown_sibling(__file__)
+    st_utils.show_markdown_sibling(__file__)
 
 
-@default_st_cache(show_spinner=False)
+@st_utils.default_st_cache(show_spinner=False)
 def get_row_from_point(df: pd.DataFrame, point: tuple[int, int]):
     """Get row from data frame based on image coordinates.
 
@@ -44,17 +35,17 @@ def get_row_from_point(df: pd.DataFrame, point: tuple[int, int]):
     return df.iloc[point[0] + point[1] * utils.image_width(df)]
 
 
-@default_st_cache(show_spinner="Performing K-means clustering")
+@st_utils.default_st_cache(show_spinner="Performing K-means clustering")
 def kmeans_clustering(
-    data: SelectedData, points: list[tuple[int, int]]
-) -> ClusteringResult:
+    data: st_utils.SelectedData, points: list[tuple[int, int]]
+) -> st_utils.ClusteringResult:
     """Perform k-means clustering.
 
     Arguments:
         data -- data input.
         points -- selected initial points.
     """
-    df_clust = prepare_df_for_clustering(data)
+    df_clust = st_utils.prepare_df_for_clustering(data)
     image_width = utils.image_width(data.df)
 
     rows = np.array([get_row_from_point(data.df, point).to_numpy() for point in points])
@@ -73,11 +64,11 @@ def kmeans_clustering(
     # Show plot in Streamlit.
     st.pyplot(fig)
 
-    return ClusteringResult(data.df, clusters)
+    return st_utils.ClusteringResult(data.df, clusters)
 
 
 with results:
-    selected_data = data_selection()
+    selected_data = st_utils.data_selection()
     if selected_data is None:
         st.stop()
     assert selected_data is not None
@@ -149,4 +140,4 @@ with results:
     else:
         with clust_result_col:
             result = kmeans_clustering(selected_data, st.session_state.points)
-        clustering_summary(result)
+        st_utils.clustering_summary(result)

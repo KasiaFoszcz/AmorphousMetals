@@ -8,25 +8,21 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
 
+import amorphous_metals.streamlit.utils as st_utils
 from amorphous_metals import utils
 from amorphous_metals.convert import convert_raw_to_df
-from amorphous_metals.streamlit.utils import (
-    MENU_ITEMS,
-    default_st_cache,
-    show_markdown_sibling,
-)
 
-st.set_page_config(menu_items=MENU_ITEMS)
+st.set_page_config(menu_items=st_utils.MENU_ITEMS)
 
 st.title("Data")
 
 input_tab, description_tab = st.tabs(["Data input", "Data description"])
 
 with description_tab:
-    show_markdown_sibling(__file__)
+    st_utils.show_markdown_sibling(__file__)
 
 
-@default_st_cache(show_spinner="Processing raw data file…")
+@st_utils.default_st_cache(show_spinner="Processing raw data file…")
 def show_file(df: pd.DataFrame):
     """Visualize raw file.
 
@@ -76,7 +72,7 @@ def show_file(df: pd.DataFrame):
 
 
 # Wrap `convert_raw_to_df` with Streamlit caching decorator.
-convert_raw_to_df = default_st_cache(show_spinner=False)(convert_raw_to_df)
+convert_raw_to_df = st_utils.default_st_cache(show_spinner=False)(convert_raw_to_df)
 
 
 with input_tab:
