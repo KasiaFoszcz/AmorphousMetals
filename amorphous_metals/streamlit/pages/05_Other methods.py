@@ -10,14 +10,13 @@ import scipy
 import streamlit as st
 from sklearn.cluster import OPTICS
 
+import amorphous_metals.streamlit.utils as st_utils
 from amorphous_metals import utils
 from amorphous_metals.convert import convert_raw_to_df
-from amorphous_metals.streamlit.utils import MENU_ITEMS, show_markdown_sibling
 
-st.set_page_config(menu_items=MENU_ITEMS)
+st.set_page_config(menu_items=st_utils.MENU_ITEMS)
 
-
-show_markdown_sibling(__file__)
+st_utils.show_markdown_sibling(__file__)
 
 gpt, optics = st.tabs(["ChatGPT", "OPTICS"])
 
@@ -54,7 +53,7 @@ def plot_reference(ax) -> pd.DataFrame | None:
     return None
 
 
-@st.cache_data
+@st_utils.default_st_cache(show_spinner=False)
 def plot_gpt_reference():
     """Generate ChatGPT clustering reference plot."""
     fig, ax = plt.subplots(1, 3)
@@ -73,7 +72,7 @@ def plot_gpt_reference():
     return fig
 
 
-@st.cache_data
+@st_utils.default_st_cache(show_spinner=False)
 def plot_gpt_clustering():
     """Generate ChatGPT clustering result plot."""
     fig = plt.figure(figsize=(14, 7))
@@ -101,7 +100,7 @@ def plot_gpt_clustering():
 
 
 with gpt:
-    show_markdown_sibling(__file__, "ChatGPT")
+    st_utils.show_markdown_sibling(__file__, "ChatGPT")
 
     st.write("Reference image of HIT feature (hardness):")
     st.pyplot(plot_gpt_reference())
@@ -117,7 +116,7 @@ with gpt:
     )
 
 
-@st.cache_data
+@st_utils.default_st_cache(show_spinner=False)
 def plot_optics():
     """Generate OPTICS reference and clustering result plot."""
     fig, ax = plt.subplots(1, 2)
@@ -149,5 +148,5 @@ def plot_optics():
 
 
 with optics:
-    show_markdown_sibling(__file__, "OPTICS")
+    st_utils.show_markdown_sibling(__file__, "OPTICS")
     st.pyplot(plot_optics())

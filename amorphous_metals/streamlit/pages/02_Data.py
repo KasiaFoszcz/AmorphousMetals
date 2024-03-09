@@ -8,21 +8,21 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
 
+import amorphous_metals.streamlit.utils as st_utils
 from amorphous_metals import utils
 from amorphous_metals.convert import convert_raw_to_df
-from amorphous_metals.streamlit.utils import MENU_ITEMS, show_markdown_sibling
 
-st.set_page_config(menu_items=MENU_ITEMS)
+st.set_page_config(menu_items=st_utils.MENU_ITEMS)
 
 st.title("Data")
 
-input, description = st.tabs(["Data input", "Data description"])
+input_tab, description_tab = st.tabs(["Data input", "Data description"])
 
-with description:
-    show_markdown_sibling(__file__)
+with description_tab:
+    st_utils.show_markdown_sibling(__file__)
 
 
-@st.cache_data
+@st_utils.default_st_cache(show_spinner="Processing raw data file…")
 def show_file(df: pd.DataFrame):
     """Visualize raw file.
 
@@ -52,7 +52,11 @@ def show_file(df: pd.DataFrame):
     df_expander.dataframe(df.describe())
 
     # Create plots.
-    fig = plt.figure(num=df.Name, figsize=(7, 12))
+    try:
+        plot_name = df.Name
+    except AttributeError:
+        plot_name = None
+    fig = plt.figure(num=plot_name, figsize=(7, 12))
     fig.tight_layout()
 
     subplot_cols = 4
@@ -68,10 +72,10 @@ def show_file(df: pd.DataFrame):
 
 
 # Wrap `convert_raw_to_df` with Streamlit caching decorator.
-convert_raw_to_df = st.cache_data(convert_raw_to_df)
+convert_raw_to_df = st_utils.default_st_cache(show_spinner=False)(convert_raw_to_df)
 
 
-with input:
+with input_tab:
     # Get presets (if available).
     metal_data_path = os.getenv("METAL_DATA_PATH")
     presets = (

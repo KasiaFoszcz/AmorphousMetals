@@ -5,34 +5,26 @@ import scipy.spatial.distance as spd
 import streamlit as st
 from matplotlib import pyplot as plt
 
+import amorphous_metals.streamlit.utils as st_utils
 from amorphous_metals import utils
-from amorphous_metals.streamlit.utils import (
-    MENU_ITEMS,
-    ClusteringResult,
-    SelectedData,
-    clustering_summary,
-    data_selection,
-    prepare_df_for_clustering,
-    show_markdown_sibling,
-)
 
-st.set_page_config(menu_items=MENU_ITEMS)
+st.set_page_config(menu_items=st_utils.MENU_ITEMS)
 
 st.title("Hierarchical clustering")
 
 results, method = st.tabs(["Results", "Method"])
 
 with method:
-    show_markdown_sibling(__file__)
+    st_utils.show_markdown_sibling(__file__)
 
 
-@st.cache_data
+@st_utils.default_st_cache(show_spinner="Performing hierarchical clustering…")
 def hierarchical_clustering(
-    data: SelectedData, method: str, metric: str, cluster_count: int
-) -> ClusteringResult:
+    data: st_utils.SelectedData, method: str, metric: str, cluster_count: int
+) -> st_utils.ClusteringResult:
     """Perform hierarchical clustering."""
     # Prepare "clusterable" data.
-    df_clust = prepare_df_for_clustering(data)
+    df_clust = st_utils.prepare_df_for_clustering(data)
     image_width = utils.image_width(data.df)
 
     # Prepare figure.
@@ -62,11 +54,11 @@ def hierarchical_clustering(
     # Show plot in Streamlit.
     st.pyplot(fig)
 
-    return ClusteringResult(data.df, clusters)
+    return st_utils.ClusteringResult(data.df, clusters)
 
 
 with results:
-    selected_data = data_selection()
+    selected_data = st_utils.data_selection()
 
     method = st.selectbox(
         "Select clustering method:",
@@ -89,4 +81,4 @@ with results:
 
     if method is not None and metric is not None:
         result = hierarchical_clustering(selected_data, method, metric, cluster_count)
-        clustering_summary(result)
+        st_utils.clustering_summary(result)

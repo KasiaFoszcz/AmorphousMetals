@@ -24,14 +24,6 @@ RUN apt-get update \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
-# Add example data and Python sources.
-COPY --link data/ /app/data/
-COPY --link amorphous_metals/ /app/amorphous_metals/
-
-# Install with a proper package version.
-RUN --mount=type=bind,source=.git,target=/app/.git \
-    poetry install --only main,streamlit
-
 # Set the default environment.
 ENV STREAMLIT_SERVER_PORT=8501 \
     STREAMLIT_SERVER_ADDRESS=0.0.0.0 \
@@ -39,7 +31,22 @@ ENV STREAMLIT_SERVER_PORT=8501 \
     STREAMLIT_SERVER_ENABLE_STATIC_SERVING=True \
     METAL_DATA_PATH=/app/data/
 
+# Add example data and Python sources.
+COPY --link data/ ${METAL_DATA_PATH}
+COPY --link amorphous_metals/ /app/amorphous_metals/
+
+# Install with a proper package version.
+RUN --mount=type=bind,source=.git,target=/app/.git \
+    poetry install --only main,streamlit
+
+# Add non-root user, ensure proper ownership, and add data/cache directory as a volume.
+RUN useradd -MU -d /app streamlit \
+    && mkdir -p ${METAL_DATA_PATH} /app/.streamlit/cache \
+    && chown -R streamlit:streamlit /app
+VOLUME ${METAL_DATA_PATH} /app/.streamlit/cache
+
 # Run the Streamlit app.
+USER streamlit
 EXPOSE ${STREAMLIT_SERVER_PORT}
 HEALTHCHECK CMD curl --fail http://localhost:${STREAMLIT_SERVER_PORT}/_stcore/health
 ENTRYPOINT ["poetry", "run", "python3", "-m", "streamlit", "run", "amorphous_metals/streamlit/Home.py"]

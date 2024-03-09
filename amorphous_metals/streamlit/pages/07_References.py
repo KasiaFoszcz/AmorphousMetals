@@ -2,8 +2,8 @@
 
 import streamlit as st
 
-from amorphous_metals.streamlit.utils import MENU_ITEMS, show_markdown_sibling
+import amorphous_metals.streamlit.utils as st_utils
 
-st.set_page_config(menu_items=MENU_ITEMS)
+st.set_page_config(menu_items=st_utils.MENU_ITEMS)
 
-show_markdown_sibling(__file__)
+st_utils.show_markdown_sibling(__file__)
