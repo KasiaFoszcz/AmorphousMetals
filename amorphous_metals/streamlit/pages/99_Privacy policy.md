@@ -223,7 +223,7 @@ information with any organization apart from us. They also commit to protect the
 data they hold on our behalf and to retain it for the period we instruct. The
 third parties we may share personal information with are as follows:
 
-* **Web and Mobile Analytics:** Google Analytics
+* **Web and Mobile Analytics:** Google Analytics and Hotjar
 
 We also may need to share your personal information in the following situations:
 
