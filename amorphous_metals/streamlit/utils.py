@@ -180,11 +180,9 @@ def prepare_df_for_clustering(data: SelectedData) -> pd.DataFrame:
         Prepared data frame.
     """
     without_holes = utils.filter_holes(data.df)[[*data.features]]
-    return (
-        (without_holes - without_holes.mean()) / without_holes.std()
-        if data.normalize_data
-        else without_holes
-    )
+    if not data.normalize_data:
+        return without_holes
+    return ((without_holes - without_holes.mean()) / without_holes.std()).fillna(0)
 
 
 @dataclass(frozen=True)
