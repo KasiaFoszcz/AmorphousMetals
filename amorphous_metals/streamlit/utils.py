@@ -14,6 +14,9 @@ import pandas as pd
 import streamlit as st
 from streamlit.commands.page_config import MenuItems
 from streamlit.delta_generator import DeltaGenerator
+from streamlit.runtime.uploaded_file_manager import UploadedFile
+
+from amorphous_metals import convert
 
 MENU_ITEMS: MenuItems = {
     "Report a bug": "https://github.com/KasiaFoszcz/AmorphousMetals/issues",
@@ -30,15 +33,6 @@ MENU_ITEMS: MenuItems = {
         Version: {version("amorphous_metals")}
         """,
 }
-
-
-DEFAULT_COLUMNS = (
-    "HIT (O&P) [MPa]",
-    "HVIT (O&P) [Vickers]",
-    "EIT (O&P) [GPa]",
-    "nit [%]",
-)
-"""Default columns used for clustering."""
 
 
 def default_st_cache(func: Callable[..., Any] | None = None, **kwargs):
@@ -129,6 +123,18 @@ def for_tabs(
     return tuple(results)
 
 
+@default_st_cache(show_spinner=False)
+def convert_raw_to_df(
+    raw_input: Path | str | UploadedFile, sort_x_y: bool = False
+) -> pd.DataFrame | None:
+    """Wrap around convert.convert_raw_to_df with error handling and caching."""
+    try:
+        return convert.convert_raw_to_df(raw_input, sort_x_y)
+    except ValueError as e:
+        st.error(f"Parser error: {e}")
+    return None
+
+
 @dataclass
 class Point:
     """A point with X and Y coordinates."""
@@ -201,9 +207,11 @@ def data_selection() -> SelectedData | None:
     )
     match feature_set:
         case "custom":
-            features = st.multiselect("Select features:", df.columns, DEFAULT_COLUMNS)
+            features = st.multiselect(
+                "Select features:", df.columns, convert.DEFAULT_COLUMNS
+            )
         case "defaults":
-            features = list(DEFAULT_COLUMNS)
+            features = list(convert.DEFAULT_COLUMNS)
         case "all + XY":
             features = list(df.columns)
         case _:

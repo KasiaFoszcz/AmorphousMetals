@@ -10,8 +10,7 @@ import scipy
 import streamlit as st
 from sklearn.cluster import OPTICS
 
-import amorphous_metals.streamlit.utils as utils
-from amorphous_metals.convert import convert_raw_to_df
+from amorphous_metals.streamlit import utils
 
 st.set_page_config(menu_items=utils.MENU_ITEMS)
 
@@ -25,7 +24,7 @@ def plot_reference(ax) -> pd.DataFrame | None:
     ax.set_axis_off()
     ax.set_aspect(1)
     try:
-        ref_df = convert_raw_to_df(
+        ref_df = utils.convert_raw_to_df(
             Path(
                 os.getenv(
                     "METAL_DATA_PATH", Path(__file__).parent.parent.parent / "data"
@@ -33,6 +32,8 @@ def plot_reference(ax) -> pd.DataFrame | None:
             )
             / "ZrCu alloys/Be0_matryca15_50mN_spacing7um_strefa_przejsciowa.TXT"
         )
+        if ref_df is None:
+            raise FileNotFoundError()
         ax.imshow(
             ref_df["HIT (O&P) [MPa]"]
             .to_numpy()

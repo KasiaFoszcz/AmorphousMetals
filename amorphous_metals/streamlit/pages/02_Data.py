@@ -8,8 +8,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
 
-import amorphous_metals.streamlit.utils as utils
-from amorphous_metals.convert import convert_raw_to_df
+from amorphous_metals.streamlit import utils
 
 st.set_page_config(menu_items=utils.MENU_ITEMS)
 
@@ -70,10 +69,6 @@ def show_file(df: pd.DataFrame):
     st.pyplot(fig)
 
 
-# Wrap `convert_raw_to_df` with Streamlit caching decorator.
-convert_raw_to_df = utils.default_st_cache(show_spinner=False)(convert_raw_to_df)
-
-
 with input_tab:
     # Get presets (if available).
     metal_data_path = os.getenv("METAL_DATA_PATH")
@@ -101,9 +96,14 @@ with input_tab:
 
     try:
         if input_file is not None:
-            st.session_state.df = convert_raw_to_df(input_file)
+            df = utils.convert_raw_to_df(input_file)
         elif preset is not None:
-            st.session_state.df = convert_raw_to_df(presets[preset])
+            df = utils.convert_raw_to_df(presets[preset])
+        else:
+            df = None
+
+        if df is not None:
+            st.session_state.df = df
     except ValueError as e:
         st.error(f"Parser error: {e}")
 
