@@ -2,7 +2,7 @@
 
 In conclusion, the Metal Phases Analyzer has proved to be successful.
 Hierarchical clustering emerged as the most accurate method, followed by k-means
-clustering which also demonstrated good performance. One notable advantage of
+clustering, which also demonstrated good performance. One notable advantage of
 k-means clustering is the ability to manually choose clustering starting points,
 providing researchers with more control over the analysis.
 
