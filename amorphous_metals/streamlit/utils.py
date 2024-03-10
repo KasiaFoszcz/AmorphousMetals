@@ -362,34 +362,47 @@ def fill_holes(
     return np.array(output)
 
 
-def inject_ga():
+def inject_analytics():
     """Inject Google Analytics tracking to the website.
 
     See https://github.com/streamlit/streamlit/issues/969.
     """
     # new tag method
     GA_ID = "google_analytics"
-    GA_JS = """
+    HOTJAR_ID = "hotjar"
+    GA_HOTJAR_JS = """
         <!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-ER71KM1HTP" id="google_analytics"></script>
         <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-ER71KM1HTP');
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-ER71KM1HTP');
+        </script>
+
+        <!-- Hotjar Tracking Code for AmorphousMetals -->
+        <script id="hotjar">
+            (function(h,o,t,j,a,r){
+                h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+                h._hjSettings={hjid:3899497,hjsv:6};
+                a=o.getElementsByTagName('head')[0];
+                r=o.createElement('script');r.async=1;
+                r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+                a.appendChild(r);
+            })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
         </script>
     """
     # Insert the script in the head tag of the static template inside your virtual
     index_path = Path(st.__file__).parent / "static" / "index.html"
     soup = BeautifulSoup(index_path.read_text(), features="lxml")
-    if not soup.find(id=GA_ID):  # if cannot find tag
+    if not soup.find(id=GA_ID) or not soup.find(id=HOTJAR_ID):  # if cannot find tag
         bck_index = index_path.with_suffix(".bck")
         if bck_index.exists():
             shutil.copy(bck_index, index_path)  # recover from backup
         else:
             shutil.copy(index_path, bck_index)  # keep a backup
         html = str(soup)
-        new_html = html.replace("<head>", "<head>\n" + GA_JS)
+        new_html = html.replace("<head>", "<head>\n" + GA_HOTJAR_JS)
         index_path.write_text(new_html)
 
 
@@ -411,7 +424,7 @@ def page_head(**kwargs):
     st.set_page_config(menu_items=MENU_ITEMS, **kwargs)
 
     float_init()
-    inject_ga()
+    inject_analytics()
 
     try:
         sta.start_tracking(load_from_json=_ANALYTICS_STORE)
