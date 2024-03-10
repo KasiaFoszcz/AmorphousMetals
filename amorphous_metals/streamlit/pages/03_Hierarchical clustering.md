@@ -1,4 +1,5 @@
-Hierarchical clustering (scikit-learn library) gave the best results so far.
+Hierarchical clustering (scikit-learn library) has given the best results so
+far.
 
 Hierarchical clustering is a general family of clustering algorithms that build
 nested clusters by merging or splitting them successively. This hierarchy of

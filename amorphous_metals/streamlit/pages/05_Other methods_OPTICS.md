@@ -2,7 +2,7 @@
 
 The OPTICS clustering method was used to analyze a metal sample called
 *Be0_matryca15_50mN_spacing7um_strefa_przejsciowa*. The goal was to handle
-clusters of different shapes and identify outliers, without needing to specify
+clusters of different shapes and identify outliers without needing to specify
 the number of clusters in advance. The seuclidean distance metric was used,
 which had previously worked well for hierarchical clustering. Additionally, the
 minimum size of a cluster was set to 10 points to avoid noisy results. However,

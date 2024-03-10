@@ -35,10 +35,10 @@ short.write(
     The Metal Phases Analyzer is integrated with a nanoindentation machine, which is
     capable of measuring various mechanical properties of the sample. The results
     obtained from the nanoindentation machine are fed into the analyzer. Then, the
-    application performs clustering of the different metal phases present in the sample
-    and calculates key mechanical properties for each phase identified. These results
-    help researchers assess the quality and performance of the amorphous metal,
-    providing valuable insights for further analysis and experimentation.
+    application clusters the different metal phases present in the sample and calculates
+    key mechanical properties for each phase. These results help researchers assess the
+    quality and performance of the amorphous metal, providing valuable insights for
+    further analysis and experimentation.
     """
 )
 full.write(
@@ -83,7 +83,7 @@ all_tabs(lambda: st.header("What are amorphous metals?"))
 short.write(
     """
     Amorphous metal also known as metallic glass or glassy metal is a solid metallic
-    material, usually an alloy, with disordered atomic-scale structure.
+    material, usually an alloy, with a disordered atomic-scale structure.
 
     Most metals are crystalline in their solid state, which means they have a highly
     ordered arrangement of atoms. Amorphous metals are non-crystalline, have good
@@ -92,7 +92,7 @@ short.write(
 )
 full.write(
     """
-    Amorphous metal also known as metallic glass or glassy metal is a solid metallic
+    Amorphous metal, also known as metallic glass or glassy metal, is a solid metallic
     material, usually an alloy, with disordered atomic-scale structure.
 
     Most metals are crystalline in their solid state, which means they have a highly
@@ -113,23 +113,23 @@ all_tabs(
 short.write(
     """
     Amorphous metal alloys contain atoms of significantly different sizes, leading to
-    low free volume that prevents the atoms moving enough to form an ordered lattice.
-    The material structure also results in low shrinkage during cooling, and resistance
-    to plastic deformation. The absence of grain boundaries, the weak spots of
-    crystalline materials, leads to better resistance to wear and corrosion.
+    low free volume that prevents the atoms from moving enough to form an ordered
+    lattice. The material structure also results in low shrinkage during cooling and
+    resistance to plastic deformation. The absence of grain boundaries, the weak spots
+    of crystalline materials, leads to better resistance to wear and corrosion.
     """
 )
 full.write(
     """
     Amorphous metal alloys contain atoms of significantly different sizes, leading to
     low free volume (and therefore up to orders of magnitude higher viscosity than other
-    metals and alloys) in molten state. The viscosity prevents the atoms moving enough
-    to form an ordered lattice. The material structure also results in low shrinkage
-    during cooling, and resistance to plastic deformation. The absence of grain
+    metals and alloys) in the molten state. The viscosity prevents the atoms from moving
+    enough to form an ordered lattice. The material structure also results in low
+    shrinkage during cooling and resistance to plastic deformation. The absence of grain
     boundaries, the weak spots of crystalline materials, leads to better resistance to
     wear and corrosion. Amorphous metals, while technically glasses, are also much
     tougher and less brittle than oxide glasses and ceramics. Amorphous metals can be
-    grouped in two categories, as either non-ferromagnetic, if they are composed of Ln,
+    grouped into two categories, either non-ferromagnetic, if they are composed of Ln,
     Mg, Zr, Ti, Pd, Ca, Cu, Pt and Au, or ferromagnetic alloys, if they are composed of
     Fe, Co, and Ni.
     """
@@ -149,13 +149,13 @@ all_tabs(
 short.write(
     """
     Amorphous metals derive their strength directly from their non-crystalline
-    structure. One modern amorphous metal, Vitreloy, has a tensile strength that is
-    almost twice that of high-grade titanium.
+    structure. One modern amorphous metal, Vitreloy, has a tensile strength almost twice
+    that of high-grade titanium.
 
-    Amorphous alloys are true glasses, which means that they soften and flow upon
-    heating. This allows for easy processing, such as by injection molding, in much the
-    same way as polymers. As a result, amorphous alloys have been commercialized for use
-    in sports equipment, medical devices, and as cases for electronic equipment.
+    Amorphous alloys are true glasses, which soften and flow upon heating. This allows
+    for easy processing, such as by injection molding, in much the same way as polymers.
+    As a result, amorphous alloys have been commercialized for use in sports equipment,
+    medical devices, and as cases for electronic equipment.
     """
 )
 full.write(
@@ -165,7 +165,7 @@ full.write(
     and high electrical resistance. Usually the electrical conductivity of a metallic
     glass is of the same low order of magnitude as of a molten metal just above the
     melting point. The high resistance leads to low losses by eddy currents when
-    subjected to alternating magnetic fields, a property useful for e.g. transformer
+    subjected to alternating magnetic fields, a property useful for e.g., transformer
     magnetic cores. Their low coercivity also contributes to low loss.
 
     Amorphous metals have higher tensile yield strengths and higher elastic strain
@@ -179,12 +179,12 @@ full.write(
     modern amorphous metal, known as Vitreloy, has a tensile strength that is almost
     twice that of high-grade titanium. However, metallic glasses at room temperature are
     not ductile and tend to fail suddenly when loaded in tension, which limits the
-    material applicability in reliability-critical applications, as the impending
+    material's applicability in reliability-critical applications, as the impending
     failure is not evident. Therefore, there is considerable interest in producing metal
     matrix composites consisting of a metallic glass matrix containing dendritic
     particles or fibers of a ductile crystalline metal.
 
-    Perhaps the most useful property of bulk amorphous alloys is that they are true
+    Perhaps the most valuable property of bulk amorphous alloys is that they are true
     glasses, which means that they soften and flow upon heating. This allows for easy
     processing, such as by injection molding, in much the same way as polymers. As a
     result, amorphous alloys have been commercialized for use in sports equipment,
@@ -205,7 +205,7 @@ short.write(
 )
 full.write(
     """
-    Currently the most important application is due to the special magnetic properties
+    Currently, the most important application is due to the unique magnetic properties
     of some ferromagnetic metallic glasses. The low magnetization loss is used in high
     efficiency transformers (amorphous metal transformer) at line frequency and some
     higher frequency transformers. Also electronic article surveillance (such as theft
@@ -221,7 +221,7 @@ full.write(
     these properties, a Ti-Zr-Cu-Ni-Sn metallic glass was used to improve the
     sensitivity of a Coriolis flow meter. This flow meter is about 28-53 times more
     sensitive than conventional meters, which can be applied in fossil-fuel, chemical,
-    environmental, semiconductor and medical science industry.
+    environmental, semiconductor and medical science industries.
     """
 )
 
@@ -242,16 +242,16 @@ full.write(
 all_tabs(lambda: st.subheader("Potential"))
 short.write(
     """
-    1. Nanoimprint lithography where expensive nano-molds made of silicon break easily.
+    1. Nanoimprint lithography, where expensive nano-molds made of silicon break easily.
        Nano-molds made from metallic glasses are easy to fabricate and more durable than
        silicon molds.
-    2. Nanocomposites for electronic application such as field electron emission
+    2. Nanocomposites for electronic applications such as field electron emission
        devices.
-    3. Biomaterial for implantation into bones as screws, pins, or plates, to fix
+    3. Biomaterial for implantation into bones as screws, pins, or plates to fix
        fractures. Unlike traditional steel or titanium, this material dissolves in
        organisms at a rate of roughly 1 millimeter per month and is replaced with bone
        tissue. This speed can be adjusted by varying the content of zinc.
-    4. Any applications which requires high stress tolerance.
+    4. Any applications which require high stress tolerance.
     """
 )
 full.write(
@@ -259,20 +259,20 @@ full.write(
     Amorphous metals exhibit unique softening behavior above their glass transition and
     this softening has been increasingly explored for thermoplastic forming of metallic
     glasses. Such low softening temperature allows for developing simple methods for
-    making composites of nanoparticles (e.g. carbon nanotubes) and bulk metallic
+    making composites of nanoparticles (e.g., carbon nanotubes) and bulk metallic
     glasses. It has been shown that metallic glasses can be patterned on extremely small
     length scales ranging from 10 nm to several millimeters. This may solve the problems
     of nanoimprint lithography where expensive nano-molds made of silicon break easily.
     Nano-molds made from metallic glasses are easy to fabricate and more durable than
     silicon molds. The superior electronic, thermal and mechanical properties of bulk
     metallic glasses compared to polymers make them a good option for developing
-    nanocomposites for electronic application such as field electron emission devices.
+    nanocomposites for electronic applications such as field electron emission devices.
 
     Ti<sub>40</sub>Cu<sub>36</sub>Pd<sub>14</sub>Zr<sub>10</sub> is believed to be
     noncarcinogenic, is about three times stronger than titanium, and its elastic
     modulus nearly matches bones. It has a high wear resistance and does not produce
     abrasion powder. The alloy does not undergo shrinkage on solidification. A surface
-    structure can be generated that is biologically attachable by surface modification
+    structure that is biologically attachable can be generated by surface modification
     using laser pulses, allowing better joining with bone.
 
     Mg<sub>60</sub>Zn<sub>35</sub>Ca<sub>5</sub>, rapidly cooled to achieve amorphous
@@ -282,14 +282,14 @@ full.write(
     roughly 1 millimeter per month and is replaced with bone tissue. This speed can be
     adjusted by varying the content of zinc.
 
-    Bulk metallic glasses also seem to exhibit superior properties like SAM2X5-630 which
-    has the highest recorded elastic limit for any steel alloy, according to the
+    Bulk metallic glasses also seem to exhibit superior properties like SAM2X5-630,
+    which has the highest recorded elastic limit for any steel alloy, according to the
     researcher, essentially it has the highest threshold limit at which a material can
     withstand an impact without deforming permanently (plasticity). The alloy can
     withstand pressure and stress of up to 12.5 GPa (123,000 atm) without undergoing any
     permanent deformation, this is the highest impact resistance of any bulk metallic
-    glass ever recorded (as of 2016). This makes it as an attractive option for any
-    applications which requires high stress tolerance.
+    glass ever recorded (as of 2016). This makes it an attractive option for any
+    application which requires high stress tolerance.
     """,
     unsafe_allow_html=True,
 )
@@ -310,7 +310,7 @@ full.write(
     methods have been suggested as a method to create larger bulk samples. Selective
     laser melting (SLM) is one example of an additive manufacturing method that has been
     used to make iron based metallic glasses. Laser foil printing (LFP) is another
-    method where foils of the amorphous metals are stacked and welded together, layer by
+    method where foils of amorphous metals are stacked and welded together, layer by
     layer.
     """
 )
@@ -326,17 +326,16 @@ all_tabs(lambda: st.header("What is nanoindentation?"))
 
 short.write(
     """
-    In a nanoindentation test, a very small and hard tip whose mechanical properties are
-    known (frequently made of a very hard material like diamond) is pressed into a
-    sample whose properties are unknown. The load placed on the indenter tip is
-    increased as the tip penetrates further into the specimen and soon reaches a
-    user-defined value. At this point, the load may be held constant for a period or
-    removed.
+    In a nanoindentation test, a tiny and hard tip whose mechanical properties are known
+    (frequently made of a very hard material like diamond) is pressed into a sample
+    whose properties are unknown. The load placed on the indenter tip is increased as
+    the tip penetrates further into the specimen and soon reaches a user-defined value.
+    At this point, the load may be held constant for a period or removed.
 
     While indenting, various parameters such as load and depth of penetration can be
     measured. A record of these values can be plotted on a graph to create a
     load-displacement curve (such as the one shown in the figure below). These curves
-    can be used to extract mechanical properties of the material.
+    can be used to extract the mechanical properties of the material.
     """
 )
 full.write(
@@ -346,7 +345,7 @@ full.write(
     are unknown. The load placed on the indenter tip is increased as the tip penetrates
     further into the specimen and soon reaches a user-defined value. At this point, the
     load may be held constant for a period or removed. The area of the residual
-    indentation in the sample is measured and the hardness, $H$, is defined as the
+    indentation in the sample is measured, and the hardness, $H$, is defined as the
     maximum load, $P_{\\mathrm{max}}$, divided by the residual indentation area,
     $A_{\\mathrm{r}}$.
 
@@ -367,10 +366,10 @@ full.write(
     geometry) is employed. During the course of the instrumented indentation process, a
     record of the depth of penetration is made, and then the area of the indent is
     determined using the known geometry of the indentation tip. While indenting, various
-    parameters such as load and depth of penetration can be measured. A record of these
-    values can be plotted on a graph to create a load-displacement curve (such as the
-    one shown in the figure below). These curves can be used to extract mechanical
-    properties of the material.
+    parameters, such as load and depth of penetration, can be measured. A record of
+    these values can be plotted on a graph to create a load-displacement curve (such as
+    the one shown in the figure below). These curves can be used to extract the
+    mechanical properties of the material.
     """
 )
 

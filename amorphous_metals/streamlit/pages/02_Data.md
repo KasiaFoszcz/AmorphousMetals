@@ -20,16 +20,16 @@ case since the data is unlabeled.
 In order to effectively cluster the data, I looked for an ideal clustering
 algorithm capable of handling clusters of varying sizes. This is important
 because one phase may be significantly smaller compared to another phase.
-Additionally, the clustering algorithm should be able to handle different shapes
-of clusters since the phases can vary in this aspect as well. Ideally, the
+Additionally, the clustering algorithm should be able to handle different
+cluster shapes since the phases can vary in this aspect as well. Ideally, the
 clustering algorithm should not require the number of clusters to be specified
-in advance. However, the researcher should also have the flexibility
-to manually adjust the number of clusters if they have prior knowledge or
-suspicions about the expected number of groups in a sample.
+in advance. However, the researcher should also have the flexibility to manually
+adjust the number of clusters if they have prior knowledge or suspicions about
+the expected number of groups in a sample.
 
 ### Performed clustering methods
 
-Methods I tried with results and full description:
+Methods I tried with results and complete description:
 
 - [Hierarchical clustering (successful)](Hierarchical_clustering)
 - [KMeans clustering (semi-successful)](KMeans_clustering)

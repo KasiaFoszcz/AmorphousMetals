@@ -21,7 +21,7 @@ converges to a stable solution.
 
 ## Limitations
 
-- Requires the number of clusters to be specified in advance.
+- The number of clusters is required to be specified in advance.
 - Can be sensitive to the initial placement of cluster centroids.
 - May not work well with data that has complex shapes or overlapping clusters.
 - Can be affected by outliers or noise in the data.
