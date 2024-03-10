@@ -1,9 +1,7 @@
 """Discussion Streamlit subpage."""
 
-import streamlit as st
-
 from amorphous_metals.streamlit import utils
 
-st.set_page_config(menu_items=utils.MENU_ITEMS)
-
+utils.page_head()
 utils.show_markdown_sibling(__file__)
+utils.page_tail()

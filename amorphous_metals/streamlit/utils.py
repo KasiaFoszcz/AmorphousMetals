@@ -1,20 +1,27 @@
 """Streamlit common utilities."""
 
+import datetime
 import math
+import os
+import shutil
 from dataclasses import dataclass
 from functools import cached_property
 from importlib.metadata import version
 from pathlib import Path
 from typing import Any, Callable, Sequence
 
+import extra_streamlit_components as stx
 import matplotlib as mpl
 import numpy as np
 import numpy.typing as npt
 import pandas as pd
 import streamlit as st
+import streamlit_analytics2 as sta
+from bs4 import BeautifulSoup
 from streamlit.commands.page_config import MenuItems
 from streamlit.delta_generator import DeltaGenerator
 from streamlit.runtime.uploaded_file_manager import UploadedFile
+from streamlit_float import float_init, float_parent
 
 from amorphous_metals import convert
 
@@ -205,7 +212,7 @@ def data_selection() -> SelectedData | None:
         st.columns(3)[1].page_link(
             "pages/02_Data.py", label="Please first upload data here"
         )
-        st.stop()
+        return page_tail()
 
     df: pd.DataFrame = st.session_state.df
     reference_name = st.selectbox("Select reference feature:", df.columns)
@@ -353,3 +360,118 @@ def fill_holes(
     for src, dst in enumerate(generate_hole_map(source_df)):
         output[dst] = clustered[src]
     return np.array(output)
+
+
+def inject_ga():
+    """Inject Google Analytics tracking to the website.
+
+    See https://github.com/streamlit/streamlit/issues/969.
+    """
+    # new tag method
+    GA_ID = "google_analytics"
+    GA_JS = """
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-ER71KM1HTP" id="google_analytics"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-ER71KM1HTP');
+        </script>
+    """
+    # Insert the script in the head tag of the static template inside your virtual
+    index_path = Path(st.__file__).parent / "static" / "index.html"
+    soup = BeautifulSoup(index_path.read_text(), features="lxml")
+    if not soup.find(id=GA_ID):  # if cannot find tag
+        bck_index = index_path.with_suffix(".bck")
+        if bck_index.exists():
+            shutil.copy(bck_index, index_path)  # recover from backup
+        else:
+            shutil.copy(index_path, bck_index)  # keep a backup
+        html = str(soup)
+        new_html = html.replace("<head>", "<head>\n" + GA_JS)
+        index_path.write_text(new_html)
+
+
+@st.cache_resource(experimental_allow_widgets=True)
+def get_cookie_manager():
+    """Get cookie manager instance."""
+    return stx.CookieManager()
+
+
+_ANALYTICS_STORE = os.getenv("STREAMLIT_ANALYTICS_STORE", "analytics.json")
+_ANALYTICS_PASSWORD = os.getenv("STREAMLIT_ANALYTICS_PASSWORD", "password")
+
+
+def page_head(**kwargs):
+    """Initialize page execution.
+
+    It sets up page menu, and initializes GA and tracking.
+    """
+    st.set_page_config(menu_items=MENU_ITEMS, **kwargs)
+
+    float_init()
+    inject_ga()
+
+    try:
+        sta.start_tracking(load_from_json=_ANALYTICS_STORE)
+    except OSError:
+        print(f'Failed to read "{_ANALYTICS_STORE}".')
+        sta.start_tracking()
+
+
+def page_tail():
+    """Finalize page execution.
+
+    It stop tracker (and saves its state), and shows cookie consent banner.
+
+    It should be used in place of `st.stop()`.
+    """
+    try:
+        sta.stop_tracking(
+            save_to_json=_ANALYTICS_STORE, unsafe_password=_ANALYTICS_PASSWORD
+        )
+    except OSError:
+        print(f'Failed to write "{_ANALYTICS_STORE}".')
+        sta.stop_tracking(unsafe_password=_ANALYTICS_PASSWORD)
+
+    cookie_manager = get_cookie_manager()
+    cookies_accept = cookie_manager.get("cookies-accept")
+
+    if os.getenv("DEBUG") is not None:
+        if cookies_accept and st.button("Decline cookies"):
+            cookie_manager.delete("cookies-accept")
+
+    if not cookies_accept:
+        with st.container():
+            st.markdown(
+                """
+                <style>
+                    div[data-testid="column"]:nth-of-type(2)
+                    {
+                        line-height: 50px;
+                        text-align: left;
+                    }
+                </style>
+                """,
+                unsafe_allow_html=True,
+            )
+
+            c = st.columns([4, 1])
+            c[0].markdown(
+                "<small>"
+                "We use cookies to help us understand how you interact with our "
+                "website. If you do not accept it, please leave the website. For more "
+                "information, please see our privacy policy."
+                "</small>",
+                unsafe_allow_html=True,
+            )
+            if c[1].button("Accept", type="primary"):
+                cookie_manager.set(
+                    "cookies-accept",
+                    True,
+                    expires_at=datetime.datetime.now() + datetime.timedelta(days=7),
+                )
+            float_parent("bottom: 0; background: var(--default-backgroundColor);")
+
+    return st.stop()

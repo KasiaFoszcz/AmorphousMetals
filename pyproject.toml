@@ -22,6 +22,11 @@ ruff = "^0.2.1"
 [tool.poetry.group.streamlit.dependencies]
 streamlit = "^1.31.0"
 streamlit-image-coordinates = "^0.1.6"
+streamlit-float = "^0.3.2"
+extra-streamlit-components = "^0.1.70"
+streamlit-analytics2 = "^0.6.1"
+beautifulsoup4 = "^4.12.3"
+lxml = "^5.1.0"
 
 [tool.poetry.group.notebooks.dependencies]
 ipykernel = "^6.29.2"

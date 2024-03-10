@@ -10,7 +10,7 @@ import streamlit as st
 
 from amorphous_metals.streamlit import utils
 
-st.set_page_config(menu_items=utils.MENU_ITEMS)
+utils.page_head()
 
 st.title("Data")
 
@@ -118,3 +118,5 @@ with input_tab:
         )
         col2.page_link("pages/03_Hierarchical clustering.py")
         col2.page_link("pages/04_K-means clustering.py")
+
+utils.page_tail()

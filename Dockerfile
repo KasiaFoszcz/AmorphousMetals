@@ -29,7 +29,9 @@ ENV STREAMLIT_SERVER_PORT=8501 \
     STREAMLIT_SERVER_ADDRESS=0.0.0.0 \
     STREAMLIT_BROWSER_GATHER_USAGE_STATS=False \
     STREAMLIT_SERVER_ENABLE_STATIC_SERVING=True \
-    METAL_DATA_PATH=/app/data/
+    METAL_DATA_PATH=/app/data/ \
+    STREAMLIT_ANALYTICS_STORE=/app/persist/analytics.json \
+    STREAMLIT_ANALYTICS_PASSWORD=
 
 # Add example data and Python sources.
 COPY --link data/ ${METAL_DATA_PATH}
@@ -41,7 +43,7 @@ RUN --mount=type=bind,source=.git,target=/app/.git \
 
 # Add non-root user, ensure proper ownership, and add data/cache directory as a volume.
 RUN useradd -MU -d /app streamlit \
-    && mkdir -p ${METAL_DATA_PATH} /app/.streamlit/cache \
+    && mkdir -p ${METAL_DATA_PATH} /app/.streamlit/cache /app/persist \
     && chown -R streamlit:streamlit /app
 VOLUME ${METAL_DATA_PATH} /app/.streamlit/cache
 

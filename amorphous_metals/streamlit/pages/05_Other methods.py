@@ -12,7 +12,7 @@ from sklearn.cluster import OPTICS
 
 from amorphous_metals.streamlit import utils
 
-st.set_page_config(menu_items=utils.MENU_ITEMS)
+utils.page_head()
 
 utils.show_markdown_sibling(__file__)
 
@@ -150,3 +150,5 @@ def plot_optics():
 with optics:
     utils.show_markdown_sibling(__file__, "OPTICS")
     st.pyplot(plot_optics())
+
+utils.page_tail()
