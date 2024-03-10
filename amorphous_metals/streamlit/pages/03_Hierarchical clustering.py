@@ -60,10 +60,9 @@ def hierarchical_clustering(
 with results:
     selected_data = utils.data_selection()
 
+    methods = list(sph._LINKAGE_METHODS.keys())
     method = st.selectbox(
-        "Select clustering method:",
-        sph._LINKAGE_METHODS,
-        sph._LINKAGE_METHODS["centroid"],
+        "Select clustering method:", methods, methods.index("centroid")
     )
     if method in sph._EUCLIDEAN_METHODS:
         metric = "euclidean"
