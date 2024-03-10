@@ -42,14 +42,10 @@ def kmeans_clustering(
     )
 
     # Prepare figure.
-    fig = plt.figure()
+    fig, ax = plt.subplots()
     fig.canvas.header_visible = False  # type: ignore
-
-    clust_plot = fig.add_subplot(1, 1, 1)
-    clust_plot.set_axis_off()
-    clust_plot.imshow(
-        utils.fill_holes(data.df, clusters).reshape((data.image_width, -1))
-    )
+    ax.set_axis_off()
+    ax.imshow(data.get_clustered_image(clusters))
 
     # Show plot in Streamlit.
     st.pyplot(fig)
@@ -68,19 +64,22 @@ with results:
         selected_data.df[[selected_data.reference_name]]
     ).to_numpy()
 
-    # Normalization (0-1).
+    # Normalization (0-1) for matplotlib color mapping.
     reference -= np.min(reference)
     reference /= np.max(reference)
 
-    # Map to matplotlib colors.
+    # Map to matplotlib colors (RGB without A).
+    reference = np.delete(mpl.colormaps["viridis"](reference), 3, 2)
+
+    # Fill data holes with white color.
+    reference = utils.fill_holes(
+        selected_data.df, reference, fill_with=np.array([[1, 1, 1]])
+    )
+
+    # Make it RGB888 and reshape to square.
     reference = (
-        utils.fill_holes(
-            selected_data.df,
-            np.delete(mpl.colormaps["viridis"](reference), 3, 2),
-            fill_with=np.array([[1, 1, 1]]),
-        ).reshape((selected_data.image_width, -1, 3))
-        * 255
-    ).astype(np.uint8)
+        (reference * 255).astype(np.uint8).reshape((selected_data.image_width, -1, 3))
+    )
 
     # Color selected points red.
     if "points" not in st.session_state:
@@ -110,18 +109,17 @@ with results:
                 st.session_state.points.append(point)
                 st.rerun()
 
-        # Summary of chosen points.
-        summary: list[str] = []
-        for index, point in enumerate(st.session_state.points):
-            row = selected_data.get_row_from_point(point)
-            ref_name = selected_data.reference_name
-            summary.append(
+        # Summary of chosen points (value with unit for all coordinates).
+        st.write(
+            "\n".join(
                 f"{index+1}. Value for point x = {point.x}, y = {point.y}: "
-                f"{row.loc[ref_name]} {ref_name.split()[-1][1:-1]}"
+                f"{selected_data.get_row_from_point(point).loc[selected_data.reference_name]} "
+                f"{selected_data.reference_name.split()[-1][1:-1]}"
+                for index, point in enumerate(st.session_state.points)
             )
-        st.write("\n".join(summary))
+        )
 
-        # Reset chosen points.
+        # Make it possible to reset chosen points.
         if len(st.session_state.points) > 0 and st.button("Reset"):
             st.session_state.points = []
             st.rerun()

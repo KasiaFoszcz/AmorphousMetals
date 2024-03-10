@@ -173,6 +173,14 @@ class SelectedData:
             return without_holes
         return ((without_holes - without_holes.mean()) / without_holes.std()).fillna(0)
 
+    def get_reference_image(self):
+        """Get square numpy array with selected reference feature image."""
+        return self.df[self.reference_name].to_numpy().reshape((self.image_width, -1))
+
+    def get_clustered_image(self, clustered: npt.NDArray[Any]):
+        """Get square numpy array with clustering result (with holes filled)."""
+        return fill_holes(self.df, clustered).reshape((self.image_width, -1))
+
 
 def data_selection() -> SelectedData | None:
     """Show common streamlit components to define clustering input.

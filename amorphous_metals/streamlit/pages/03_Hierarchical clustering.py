@@ -34,9 +34,7 @@ def hierarchical_clustering(
     ref_plot = fig.add_subplot(1, 2, 1)
     ref_plot.set_title(f"Reference: {data.reference_name}")
     ref_plot.set_axis_off()
-    ref_plot.imshow(
-        data.df[data.reference_name].to_numpy().reshape((data.image_width, -1))
-    )
+    ref_plot.imshow(data.get_reference_image())
 
     # Perform clustering.
     clusters = sph.fcluster(
@@ -47,9 +45,7 @@ def hierarchical_clustering(
     clust_plot = fig.add_subplot(1, 2, 2)
     clust_plot.set_title("Clustered")
     clust_plot.set_axis_off()
-    clust_plot.imshow(
-        utils.fill_holes(data.df, clusters).reshape((data.image_width, -1))
-    )
+    clust_plot.imshow(data.get_clustered_image(clusters))
 
     # Show plot in Streamlit.
     st.pyplot(fig)
