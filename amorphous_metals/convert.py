@@ -8,7 +8,13 @@ import numpy as np
 import pandas as pd
 from streamlit.runtime.uploaded_file_manager import UploadedFile
 
-from amorphous_metals.utils import DEFAULT_COLUMNS
+DEFAULT_COLUMNS = (
+    "HIT (O&P) [MPa]",
+    "HVIT (O&P) [Vickers]",
+    "EIT (O&P) [GPa]",
+    "nit [%]",
+)
+"""Default columns used for clustering."""
 
 REQUIRED_COLUMNS = ("X [mm]", "Y [mm]", *DEFAULT_COLUMNS)
 """Required columns in source file to perform the default analysis."""
@@ -57,8 +63,7 @@ def convert_raw_to_df(
                 continue
 
             if row[0] != "" and not row[0].startswith("["):
-                # Section header
-
+                # Section header.
                 if any(isinstance(element, float) for element in data.values()):
                     # Save current column to data frame if the column has any values.
                     data_list = np.full(max(data.keys()), math.nan)
@@ -70,7 +75,7 @@ def convert_raw_to_df(
                 data = {}
                 column_name = row[0]
             elif row[0] != "":
-                # Section header unit
+                # Section header unit.
                 column_name += " " + row[0]
 
             if not row[1].startswith("Data"):

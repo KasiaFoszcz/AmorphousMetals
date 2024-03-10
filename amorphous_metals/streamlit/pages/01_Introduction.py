@@ -5,9 +5,9 @@ from typing import Callable
 import streamlit as st
 from streamlit.delta_generator import DeltaGenerator
 
-import amorphous_metals.streamlit.utils as st_utils
+from amorphous_metals.streamlit import utils
 
-st.set_page_config(menu_items=st_utils.MENU_ITEMS)
+st.set_page_config(menu_items=utils.MENU_ITEMS)
 
 st.title("Introduction")
 
@@ -17,7 +17,7 @@ short, full = tabs
 
 def all_tabs(streamlit_func: Callable[[], DeltaGenerator]):
     """Execute `for_tabs()` for all tabs in this file."""
-    return st_utils.for_tabs(streamlit_func, tabs)
+    return utils.for_tabs(streamlit_func, tabs)
 
 
 all_tabs(
@@ -105,7 +105,7 @@ full.write(
 
 all_tabs(
     lambda: st.image(
-        st_utils.get_image_path(__file__, "comparison.png"),
+        utils.get_image_path(__file__, "comparison.png"),
         caption="Comparison of structures",
     )
 )
@@ -137,11 +137,11 @@ full.write(
 
 all_tabs(
     lambda: st.image(
-        st_utils.get_image_path(__file__, "CrystalGrain.jpg"),
+        utils.get_image_path(__file__, "CrystalGrain.jpg"),
         caption="Microscopic image of traditional metal with grain boundaries",
     )
     and st.image(
-        st_utils.get_image_path(__file__, "AmorphousMetal.jpg"),
+        utils.get_image_path(__file__, "AmorphousMetal.jpg"),
         caption="Microscopic image of an amorphous metal",
     )
 )
@@ -226,7 +226,7 @@ full.write(
 )
 
 full.image(
-    st_utils.get_image_path(__file__, "coriolis.jpg"),
+    utils.get_image_path(__file__, "coriolis.jpg"),
     caption="A mass flow meter of the Coriolis type",
 )
 
@@ -317,7 +317,7 @@ full.write(
 
 all_tabs(
     lambda: st.image(
-        st_utils.get_image_path(__file__, "implant.png"),
+        utils.get_image_path(__file__, "implant.png"),
         caption="3D printed wrist joint implant",
     )
 )
@@ -375,7 +375,7 @@ full.write(
 
 all_tabs(
     lambda: st.image(
-        st_utils.get_image_path(__file__, "load_disp_indentation.svg"),
+        utils.get_image_path(__file__, "load_disp_indentation.svg"),
         caption="Indentation curve",
         use_column_width="always",
     )

@@ -5,27 +5,25 @@ import scipy.spatial.distance as spd
 import streamlit as st
 from matplotlib import pyplot as plt
 
-import amorphous_metals.streamlit.utils as st_utils
-from amorphous_metals import utils
+from amorphous_metals.streamlit import utils
 
-st.set_page_config(menu_items=st_utils.MENU_ITEMS)
+st.set_page_config(menu_items=utils.MENU_ITEMS)
 
 st.title("Hierarchical clustering")
 
 results, method = st.tabs(["Results", "Method"])
 
 with method:
-    st_utils.show_markdown_sibling(__file__)
+    utils.show_markdown_sibling(__file__)
 
 
-@st_utils.default_st_cache(show_spinner="Performing hierarchical clustering…")
+@utils.default_st_cache(show_spinner="Performing hierarchical clustering…")
 def hierarchical_clustering(
-    data: st_utils.SelectedData, method: str, metric: str, cluster_count: int
-) -> st_utils.ClusteringResult:
+    data: utils.SelectedData, method: str, metric: str, cluster_count: int
+) -> utils.ClusteringResult:
     """Perform hierarchical clustering."""
     # Prepare "clusterable" data.
-    df_clust = st_utils.prepare_df_for_clustering(data)
-    image_width = utils.image_width(data.df)
+    df_clust = data.prepare_df_for_clustering()
 
     # Prepare figure.
     fig = plt.figure()
@@ -36,7 +34,7 @@ def hierarchical_clustering(
     ref_plot = fig.add_subplot(1, 2, 1)
     ref_plot.set_title(f"Reference: {data.reference_name}")
     ref_plot.set_axis_off()
-    ref_plot.imshow(data.df[data.reference_name].to_numpy().reshape((image_width, -1)))
+    ref_plot.imshow(data.get_reference_image())
 
     # Perform clustering.
     clusters = sph.fcluster(
@@ -47,21 +45,20 @@ def hierarchical_clustering(
     clust_plot = fig.add_subplot(1, 2, 2)
     clust_plot.set_title("Clustered")
     clust_plot.set_axis_off()
-    clust_plot.imshow(utils.fill_holes(data.df, clusters).reshape((image_width, -1)))
+    clust_plot.imshow(data.get_clustered_image(clusters))
 
     # Show plot in Streamlit.
     st.pyplot(fig)
 
-    return st_utils.ClusteringResult(data.df, clusters)
+    return utils.ClusteringResult(data.df, clusters)
 
 
 with results:
-    selected_data = st_utils.data_selection()
+    selected_data = utils.data_selection()
 
+    methods = list(sph._LINKAGE_METHODS.keys())
     method = st.selectbox(
-        "Select clustering method:",
-        sph._LINKAGE_METHODS,
-        sph._LINKAGE_METHODS["centroid"],
+        "Select clustering method:", methods, methods.index("centroid")
     )
     if method in sph._EUCLIDEAN_METHODS:
         metric = "euclidean"
@@ -78,5 +75,6 @@ with results:
         st.stop()
 
     if method is not None and metric is not None:
-        result = hierarchical_clustering(selected_data, method, metric, cluster_count)
-        st_utils.clustering_summary(result)
+        hierarchical_clustering(
+            selected_data, method, metric, cluster_count
+        ).show_summary()
