@@ -31,14 +31,16 @@ def kmeans_clustering(
     """
     df_clust = data.prepare_df_for_clustering()
 
-    rows = np.array(
+    init_rows = np.array(
         [
-            data.get_row_from_point(point)[[*data.features]].to_numpy()
+            data.get_row_from_point(point, data.normalize_data)[[*data.features]]
             for point in points
         ]
     )
     clusters = (
-        KMeans(n_clusters=len(rows), init=rows, max_iter=2000).fit(df_clust).labels_
+        KMeans(n_clusters=len(init_rows), init=init_rows, max_iter=2000)
+        .fit(df_clust)
+        .labels_
     )
 
     # Prepare figure.
@@ -53,12 +55,22 @@ def kmeans_clustering(
     return utils.ClusteringResult(data.df, clusters)
 
 
-with results:
-    selected_data = utils.data_selection()
-    if selected_data is None:
-        st.stop()
-    assert selected_data is not None
+REP_COUNT = 22
 
+
+@st.cache_data(ttl=3600, max_entries=200)
+def generate_reference_array(
+    selected_data: utils.SelectedData, points: list[utils.Point]
+):
+    """Generate reference image array for use with streamlit_image_coordinates().
+
+    Arguments:
+        selected_data -- data selected for clustering.
+        points -- list of selected initial points.
+
+    Returns:
+        Reference numpy image array (square with RGB888 pixels).
+    """
     # Load reference data without holes.
     reference = utils.filter_holes(
         selected_data.df[[selected_data.reference_name]]
@@ -82,21 +94,29 @@ with results:
     )
 
     # Color selected points red.
-    if "points" not in st.session_state:
-        st.session_state.points = []
-
-    for point in st.session_state.points:
+    for point in points:
         reference[point.y, point.x] = (255, 0, 0)
 
     # Upscale the reference image.
-    REP_COUNT = 22
-    reference = np.repeat(np.repeat(reference, REP_COUNT, 0), REP_COUNT, 1)
+    return np.repeat(np.repeat(reference, REP_COUNT, 0), REP_COUNT, 1)
+
+
+with results:
+    selected_data = utils.data_selection()
+    if selected_data is None:
+        st.stop()
+    assert selected_data is not None
+
+    if "points" not in st.session_state:
+        st.session_state.points = []
 
     reference_col, clust_result_col = st.columns(2)
 
     with reference_col:
         # Show the image with coordinate capture.
-        value = streamlit_image_coordinates(reference)
+        value = streamlit_image_coordinates(
+            generate_reference_array(selected_data, st.session_state.points)
+        )
 
         if value is not None:
             point = utils.Point(value["x"] // REP_COUNT, value["y"] // REP_COUNT)
@@ -125,7 +145,7 @@ with results:
             st.rerun()
 
     if len(st.session_state.points) == 0:
-        clust_result_col.write("Select points for clustering in the image.")
+        clust_result_col.write("Select points for clustering in the reference image.")
     else:
         with clust_result_col:
             result = kmeans_clustering(selected_data, st.session_state.points)

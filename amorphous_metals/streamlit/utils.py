@@ -157,16 +157,18 @@ class SelectedData:
         """Get image width for the data frame."""
         return image_width(self.df)
 
-    def get_row_from_point(self, point: Point):
+    def get_row_from_point(self, point: Point, normalize_df: bool = False):
         """Get row from data frame based on image coordinates.
 
         Arguments:
             point -- point coordinates (x, y).
+            normalize_df -- normalize source dataframe before selecting the point.
 
         Returns:
             Selected row from df.
         """
-        return self.df.iloc[point.x + point.y * self.image_width]
+        df = self._normalize_dataframe(self.df) if normalize_df else self.df
+        return df.iloc[point.x + point.y * self.image_width]
 
     def prepare_df_for_clustering(self) -> pd.DataFrame:
         """Prepare data frame for clustering.
@@ -177,7 +179,12 @@ class SelectedData:
         without_holes = filter_holes(self.df)[[*self.features]]
         if not self.normalize_data:
             return without_holes
-        return ((without_holes - without_holes.mean()) / without_holes.std()).fillna(0)
+        return self._normalize_dataframe(without_holes)
+
+    @staticmethod
+    def _normalize_dataframe(df: pd.DataFrame) -> pd.DataFrame:
+        """Normalize dataframe centering around mean value and dividing by std."""
+        return ((df - df.mean()) / df.std()).fillna(0)
 
     def get_reference_image(self):
         """Get square numpy array with selected reference feature image."""
