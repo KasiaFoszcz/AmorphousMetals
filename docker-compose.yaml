@@ -8,6 +8,10 @@ services:
       - 8501:8501
     volumes:
       - cache:/app/.streamlit/cache
+      - ./data/analytics.json:/app/persist/analytics.json
+    environment:
+      STREAMLIT_ANALYTICS_FIRESTORE_KEYFILE: /app/data/firebase.json
+      STREAMLIT_ANALYTICS_STORE: /app/persist/analytics.json
 
   streamlit-local:
     image: ghcr.io/kasiafoszcz/amorphousmetals:${DOCKER_TAG:-edge}
@@ -17,9 +21,12 @@ services:
     volumes:
       - ./amorphous_metals:/app/amorphous_metals:ro
       - ./data:/app/data:ro
+      - ./data/analytics.json:/app/persist/analytics.json
       - cache:/app/.streamlit/cache
     environment:
       STREAMLIT_SERVER_RUN_ON_SAVE: True
+      STREAMLIT_ANALYTICS_FIRESTORE_KEYFILE: /app/data/firebase.json
+      STREAMLIT_ANALYTICS_STORE: /app/persist/analytics.json
 
 volumes:
   cache:

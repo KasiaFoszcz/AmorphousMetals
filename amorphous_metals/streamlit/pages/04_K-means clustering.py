@@ -9,7 +9,7 @@ from streamlit_image_coordinates import streamlit_image_coordinates
 
 from amorphous_metals.streamlit import utils
 
-st.set_page_config(menu_items=utils.MENU_ITEMS)
+utils.page_head()
 
 st.title("K-means clustering")
 
@@ -104,7 +104,7 @@ def generate_reference_array(
 with results:
     selected_data = utils.data_selection()
     if selected_data is None:
-        st.stop()
+        utils.page_tail()
     assert selected_data is not None
 
     if "points" not in st.session_state:
@@ -150,3 +150,5 @@ with results:
         with clust_result_col:
             result = kmeans_clustering(selected_data, st.session_state.points)
         result.show_summary()
+
+utils.page_tail()

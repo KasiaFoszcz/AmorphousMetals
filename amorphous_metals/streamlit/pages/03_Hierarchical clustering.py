@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 
 from amorphous_metals.streamlit import utils
 
-st.set_page_config(menu_items=utils.MENU_ITEMS)
+utils.page_head()
 
 st.title("Hierarchical clustering")
 
@@ -72,9 +72,12 @@ with results:
     )
 
     if selected_data is None:
-        st.stop()
+        utils.page_tail()
+    assert selected_data is not None
 
     if method is not None and metric is not None:
         hierarchical_clustering(
             selected_data, method, metric, cluster_count
         ).show_summary()
+
+utils.page_tail()

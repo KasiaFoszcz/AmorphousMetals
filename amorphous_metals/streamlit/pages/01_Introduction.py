@@ -7,7 +7,7 @@ from streamlit.delta_generator import DeltaGenerator
 
 from amorphous_metals.streamlit import utils
 
-st.set_page_config(menu_items=utils.MENU_ITEMS)
+utils.page_head()
 
 st.title("Introduction")
 
@@ -380,3 +380,5 @@ all_tabs(
         use_column_width="always",
     )
 )
+
+utils.page_tail()
