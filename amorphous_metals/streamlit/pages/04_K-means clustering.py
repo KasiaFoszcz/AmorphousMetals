@@ -7,7 +7,7 @@ import streamlit as st
 from sklearn.cluster import KMeans
 from streamlit_image_coordinates import streamlit_image_coordinates
 
-import amorphous_metals.streamlit.utils as utils
+from amorphous_metals.streamlit import utils
 
 st.set_page_config(menu_items=utils.MENU_ITEMS)
 

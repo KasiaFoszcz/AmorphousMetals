@@ -5,7 +5,7 @@ import scipy.spatial.distance as spd
 import streamlit as st
 from matplotlib import pyplot as plt
 
-import amorphous_metals.streamlit.utils as utils
+from amorphous_metals.streamlit import utils
 
 st.set_page_config(menu_items=utils.MENU_ITEMS)
 
