@@ -9,6 +9,7 @@ on:
   pull_request:
     branches:
       - "main"
+  # TODO: Add scheduled rebuild
 
 env:
   REGISTRY: ghcr.io
