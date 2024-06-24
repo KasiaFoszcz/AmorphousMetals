@@ -209,9 +209,12 @@ def data_selection() -> SelectedData | None:
         SelectedData or None if no data is defined.
     """
     if "df" not in st.session_state:
-        st.columns(3)[1].page_link(
-            "pages/02_Data.py", label="Please first upload data here"
-        )
+        if st.columns([1, 3, 1])[1].button(
+            label="Please first upload data by clicking here.",
+            type="primary",
+            use_container_width=True,
+        ):
+            st.switch_page("pages/02_Data.py")
         return page_tail()
 
     df: pd.DataFrame = st.session_state.df

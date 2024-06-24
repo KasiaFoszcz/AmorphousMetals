@@ -96,6 +96,7 @@ def generate_reference_array(
     # Color selected points red.
     for point in points:
         reference[point.y, point.x] = (255, 0, 0)
+    # TODO: Make selected points framed with number.
 
     # Upscale the reference image.
     return np.repeat(np.repeat(reference, REP_COUNT, 0), REP_COUNT, 1)
@@ -146,6 +147,7 @@ with results:
 
     if len(st.session_state.points) == 0:
         clust_result_col.write("Select points for clustering in the reference image.")
+        # TODO: Better indicate what needs to be done.
     else:
         with clust_result_col:
             result = kmeans_clustering(selected_data, st.session_state.points)
