@@ -1,11 +1,53 @@
 """Hierarchical clustering Streamlit subpage."""
 
 import scipy.cluster.hierarchy as sph
-import scipy.spatial.distance as spd
 import streamlit as st
 from matplotlib import pyplot as plt
 
 from amorphous_metals.streamlit import utils
+
+# Linkage methods and distance metrics documented for
+# `scipy.cluster.hierarchy.linkage()` and `scipy.spatial.distance.pdist()`. Defined
+# here, as SciPy's own lists are private (`_LINKAGE_METHODS` and `_EUCLIDEAN_METHODS`
+# were removed in SciPy 1.18).
+LINKAGE_METHODS = [
+    "single",
+    "complete",
+    "average",
+    "weighted",
+    "centroid",
+    "median",
+    "ward",
+]
+
+# Valid only with Euclidean.
+EUCLIDEAN_METHODS = {
+    "centroid",
+    "median",
+    "ward",
+}
+
+DISTANCE_METRICS = [
+    "braycurtis",
+    "canberra",
+    "chebyshev",
+    "cityblock",
+    "correlation",
+    "cosine",
+    "dice",
+    "euclidean",
+    "hamming",
+    "jaccard",
+    "jensenshannon",
+    "mahalanobis",
+    "minkowski",
+    "rogerstanimoto",
+    "russellrao",
+    "seuclidean",
+    "sokalsneath",
+    "sqeuclidean",
+    "yule",
+]
 
 utils.page_head()
 
@@ -56,16 +98,18 @@ def hierarchical_clustering(
 with results:
     selected_data = utils.data_selection()
 
-    methods = list(sph._LINKAGE_METHODS.keys())
     method = st.selectbox(
-        "Select clustering method:", methods, methods.index("centroid")
+        "Select clustering method:",
+        LINKAGE_METHODS,
+        LINKAGE_METHODS.index("centroid"),
     )
-    if method in sph._EUCLIDEAN_METHODS:
+    if method in EUCLIDEAN_METHODS:
         metric = "euclidean"
     else:
-        metrics: list[str] = list(spd._METRICS.keys())  # type: ignore
         metric = st.selectbox(
-            "Select distance metric:", metrics, metrics.index("euclidean")
+            "Select distance metric:",
+            DISTANCE_METRICS,
+            DISTANCE_METRICS.index("euclidean"),
         )
     cluster_count = st.slider(
         "Select cluster count:", min_value=2, max_value=10, value=3

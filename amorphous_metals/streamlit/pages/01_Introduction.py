@@ -341,7 +341,7 @@ all_tabs(
     lambda: st.image(
         utils.get_image_path(__file__, "load_disp_indentation.svg"),
         caption="Indentation curve",
-        use_column_width="always",
+        width="stretch",
     )
 )
 

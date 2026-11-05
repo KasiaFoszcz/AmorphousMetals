@@ -22,7 +22,6 @@ from bs4 import BeautifulSoup
 from streamlit.commands.page_config import MenuItems
 from streamlit.delta_generator import DeltaGenerator
 from streamlit.runtime.uploaded_file_manager import UploadedFile
-from streamlit_float import float_init, float_parent
 
 from amorphous_metals import convert
 
@@ -213,7 +212,7 @@ def data_selection() -> SelectedData | None:
         if st.columns([1, 3, 1])[1].button(
             label="Please first upload data by clicking here.",
             type="primary",
-            use_container_width=True,
+            width="stretch",
         ):
             st.switch_page("pages/02_Data.py")
         return page_tail()
@@ -410,7 +409,6 @@ def inject_analytics():
         index_path.write_text(new_html)
 
 
-@st.cache_resource(experimental_allow_widgets=True)
 def get_cookie_manager():
     """Get cookie manager instance."""
     return stx.CookieManager()
@@ -418,6 +416,16 @@ def get_cookie_manager():
 
 _ANALYTICS_STORE = os.getenv("STREAMLIT_ANALYTICS_STORE", "analytics.json")
 _ANALYTICS_PASSWORD = os.getenv("STREAMLIT_ANALYTICS_PASSWORD", "password")
+
+_COOKIES_ACCEPT_COOKIE = "cookies-accept"
+_COOKIES_ACCEPT_STATE = "cookies_accept"
+_COOKIES_WRITE_STATE = "cookies_accept_write"
+
+
+def _accept_cookies():
+    """Mark cookies as accepted and schedule writing the consent cookie."""
+    st.session_state[_COOKIES_ACCEPT_STATE] = True
+    st.session_state[_COOKIES_WRITE_STATE] = True
 
 
 def page_head(**kwargs):
@@ -427,7 +435,6 @@ def page_head(**kwargs):
     """
     st.set_page_config(menu_items=MENU_ITEMS, **kwargs)
 
-    float_init()
     inject_analytics()
 
     try:
@@ -437,12 +444,16 @@ def page_head(**kwargs):
         sta.start_tracking()
 
 
-def page_tail():
+def page_tail(show_decline: bool = False):
     """Finalize page execution.
 
     It stop tracker (and saves its state), and shows cookie consent banner.
 
     It should be used in place of `st.stop()`.
+
+    Keyword Arguments:
+        show_decline -- show "Decline cookies" button (in debug mode) when
+            cookies are accepted (default: {False}).
     """
     try:
         sta.stop_tracking(
@@ -452,32 +463,38 @@ def page_tail():
         print(f'Failed to write "{_ANALYTICS_STORE}".')
         sta.stop_tracking(unsafe_password=_ANALYTICS_PASSWORD)
 
+    # Consent state lives in the session; it's initialized from the cookie sent with the
+    # page request (`st.context.cookies` is available on the first run, unlike
+    # `CookieManager.get()`, which is empty until its component mounts). The cookie
+    # manager is still needed to write cookies, which Streamlit can't do natively.
     cookie_manager = get_cookie_manager()
-    cookies_accept = cookie_manager.get("cookies-accept")
+    if _COOKIES_ACCEPT_STATE not in st.session_state:
+        st.session_state[_COOKIES_ACCEPT_STATE] = bool(
+            st.context.cookies.get(_COOKIES_ACCEPT_COOKIE)
+        )
+
+    if st.session_state.pop(_COOKIES_WRITE_STATE, False):
+        cookie_manager.set(
+            _COOKIES_ACCEPT_COOKIE,
+            True,
+            expires_at=datetime.datetime.now() + datetime.timedelta(days=7),
+        )
 
     if (
-        os.getenv("DEBUG") is not None
-        and cookies_accept
+        show_decline
+        and os.getenv("DEBUG") is not None
+        and st.session_state[_COOKIES_ACCEPT_STATE]
         and st.button("Decline cookies")
     ):
-        cookie_manager.delete("cookies-accept")
+        cookie_manager.delete(_COOKIES_ACCEPT_COOKIE)
+        st.session_state[_COOKIES_ACCEPT_STATE] = False
 
-    if not cookies_accept:
-        with st.container():
-            st.markdown(
-                """
-                <style>
-                    div[data-testid="column"]:nth-of-type(2)
-                    {
-                        line-height: 50px;
-                        text-align: left;
-                    }
-                </style>
-                """,
-                unsafe_allow_html=True,
-            )
-
-            c = st.columns([4, 1])
+    if not st.session_state[_COOKIES_ACCEPT_STATE]:
+        # `st.bottom` is pinned to the bottom of the viewport regardless of the
+        # scroll position, and (like `st.sidebar`) ignores the enclosing `with`
+        # block, so it works even when `page_tail()` is called inside a tab.
+        with st.bottom.container(key="cookie-banner"):
+            c = st.columns([4, 1], vertical_alignment="center")
             c[0].markdown(
                 "<small>"
                 "We use cookies to help us understand how you interact with our "
@@ -486,12 +503,8 @@ def page_tail():
                 "</small>",
                 unsafe_allow_html=True,
             )
-            if c[1].button("Accept", type="primary"):
-                cookie_manager.set(
-                    "cookies-accept",
-                    True,
-                    expires_at=datetime.datetime.now() + datetime.timedelta(days=7),
-                )
-            float_parent("bottom: 0; background: var(--default-backgroundColor);")
+            # The callback runs before the rerun, so the banner is hidden
+            # immediately, and the cookie is written during that rerun.
+            c[1].button("Accept", type="primary", on_click=_accept_cookies)
 
     return st.stop()

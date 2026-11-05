@@ -14,7 +14,7 @@ DOCKER_COMPOSE_RUN := $(DOCKER_COMPOSE) run $(DOCKER_COMPOSE_RUN_ARGS)
 run-local:
 	DEBUG=1 \
 	METAL_DATA_PATH="$(DATA_PATH_ABS)" \
-	STREAMLIT_ANALYTICS_STORE="$(DATA_PATH_ABS)/analytics.json"
+	STREAMLIT_ANALYTICS_STORE="$(DATA_PATH_ABS)/analytics.json" \
 		$(POETRY_RUN) streamlit run $(ENTRYPOINT) \
 			--server.runOnSave true \
 			--server.enableStaticServing true \
