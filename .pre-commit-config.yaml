@@ -35,3 +35,4 @@ ci:
   skip:
     - poetry-lock  # Due to errors during PyPI connection.
     - mypy  # Due to Python 3.12 incompatibility.
+    - markdownlint  # Due to timeouts during build.
