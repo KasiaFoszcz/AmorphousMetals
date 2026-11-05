@@ -107,13 +107,11 @@ with gpt:
 
     st.write("Given this three clusters, I visualized them with matplotlib:")
     st.pyplot(plot_gpt_clustering())
-    st.write(
-        """
+    st.write("""
         Even though one can make out the distinct diagonal line (starting at point 3 and
         ending at point 165) separating Cluster 1 and Cluster 2 in this sample, the rest
         of the clustering performed by ChatGPT is incorrect.
-        """
-    )
+        """)
 
 
 @utils.default_st_cache(show_spinner=False)

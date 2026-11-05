@@ -4,11 +4,12 @@ import datetime
 import math
 import os
 import shutil
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from functools import cached_property
 from importlib.metadata import version
 from pathlib import Path
-from typing import Any, Callable, Sequence
+from typing import Any
 
 import extra_streamlit_components as stx
 import matplotlib as mpl
@@ -454,9 +455,12 @@ def page_tail():
     cookie_manager = get_cookie_manager()
     cookies_accept = cookie_manager.get("cookies-accept")
 
-    if os.getenv("DEBUG") is not None:
-        if cookies_accept and st.button("Decline cookies"):
-            cookie_manager.delete("cookies-accept")
+    if (
+        os.getenv("DEBUG") is not None
+        and cookies_accept
+        and st.button("Decline cookies")
+    ):
+        cookie_manager.delete("cookies-accept")
 
     if not cookies_accept:
         with st.container():
