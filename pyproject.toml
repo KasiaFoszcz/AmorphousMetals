@@ -16,17 +16,16 @@ scipy = "^1.12.0"
 [tool.poetry.group.dev.dependencies]
 isort = "^5.13.2"
 pre-commit = "^3.6.1"
-black = "^24.2.0"
+black = "^26.10.1"
 ruff = "^0.2.1"
 
 [tool.poetry.group.streamlit.dependencies]
 streamlit = "^1.31.0"
-streamlit-image-coordinates = "^0.1.6"
-streamlit-float = "^0.3.2"
+streamlit-image-coordinates = "^0.4.1"
 extra-streamlit-components = "^0.1.70"
 streamlit-analytics2 = "^0.6.1"
 beautifulsoup4 = "^4.12.3"
-lxml = "^5.1.0"
+lxml = "^6.1.0"
 
 [tool.poetry.group.notebooks.dependencies]
 ipykernel = "^6.29.2"
