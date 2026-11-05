@@ -1,6 +1,7 @@
 """Other methods description Streamlit subpage."""
 
 import os
+from collections.abc import Callable
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -8,6 +9,7 @@ import numpy as np
 import pandas as pd
 import scipy
 import streamlit as st
+from matplotlib.figure import Figure
 from sklearn.cluster import OPTICS
 
 from amorphous_metals.streamlit import utils
@@ -19,42 +21,48 @@ utils.show_markdown_sibling(__file__)
 gpt, optics = st.tabs(["ChatGPT", "OPTICS"])
 
 
-def plot_reference(ax) -> pd.DataFrame | None:
-    """Plot a reference on Matplotlib axis and return reference data frame."""
+REFERENCE_FILE = (
+    Path(os.getenv("METAL_DATA_PATH", Path(__file__).parents[3] / "data"))
+    / "ZrCu alloys/Be0_matryca15_50mN_spacing7um_strefa_przejsciowa.TXT"
+)
+
+
+def plot_reference(ax, reference_file: Path) -> pd.DataFrame:
+    """Plot a reference on Matplotlib axis and return reference data frame.
+
+    Raises:
+        FileNotFoundError -- if the reference file is missing or can't be parsed.
+            It's raised (not handled) here, so that callers cached with
+            `st.cache_data` don't cache the failure.
+    """
     ax.set_axis_off()
     ax.set_aspect(1)
-    try:
-        ref_df = utils.convert_raw_to_df(
-            Path(
-                os.getenv(
-                    "METAL_DATA_PATH", Path(__file__).parent.parent.parent / "data"
-                )
-            )
-            / "ZrCu alloys/Be0_matryca15_50mN_spacing7um_strefa_przejsciowa.TXT"
-        )
-        if ref_df is None:
-            raise FileNotFoundError()
-        ax.imshow(
-            ref_df["HIT (O&P) [MPa]"]
-            .to_numpy()
-            .reshape((utils.image_width(ref_df), -1))
-        )
-        return ref_df
-    except FileNotFoundError:
-        ax.text(
-            0.5,
-            0.5,
-            "Reference data file not found!",
-            horizontalalignment="center",
-            verticalalignment="center",
-            color="red",
-        )
+    if not reference_file.is_file():
+        raise FileNotFoundError(reference_file)
+    ref_df = utils.convert_raw_to_df(reference_file)
+    if ref_df is None:
+        raise FileNotFoundError(reference_file)
+    ax.imshow(
+        ref_df["HIT (O&P) [MPa]"].to_numpy().reshape((utils.image_width(ref_df), -1))
+    )
+    return ref_df
 
-    return None
+
+def show_plot(plot: Callable[[Path], Figure]):
+    """Show a cached plot, or an error if the reference file is unavailable.
+
+    The reference file is passed to the cached plot function, so that it's a
+    part of the cache key (`st.cache_data` hashes only the arguments and the
+    cached function's own source, not the functions it calls).
+    """
+    try:
+        st.pyplot(plot(REFERENCE_FILE))
+    except FileNotFoundError as e:
+        st.error(f"Reference data file not found: `{e}`")
 
 
 @utils.default_st_cache(show_spinner=False)
-def plot_gpt_reference():
+def plot_gpt_reference(reference_file: Path):
     """Generate ChatGPT clustering reference plot."""
     fig, ax = plt.subplots(1, 3)
     fig.canvas.header_visible = False  # type: ignore
@@ -67,7 +75,7 @@ def plot_gpt_reference():
     ax[2].set_axis_off()
 
     # Central reference plot.
-    plot_reference(ax[1])
+    plot_reference(ax[1], reference_file)
 
     return fig
 
@@ -103,7 +111,7 @@ with gpt:
     utils.show_markdown_sibling(__file__, "ChatGPT")
 
     st.write("Reference image of HIT feature (hardness):")
-    st.pyplot(plot_gpt_reference())
+    show_plot(plot_gpt_reference)
 
     st.write("Given this three clusters, I visualized them with matplotlib:")
     st.pyplot(plot_gpt_clustering())
@@ -115,7 +123,7 @@ with gpt:
 
 
 @utils.default_st_cache(show_spinner=False)
-def plot_optics():
+def plot_optics(reference_file: Path):
     """Generate OPTICS reference and clustering result plot."""
     fig, ax = plt.subplots(1, 2)
     fig.canvas.header_visible = False  # type: ignore
@@ -123,20 +131,16 @@ def plot_optics():
 
     # Show reference image.
     ax[0].set_title("Reference: HIT (O&P) [MPa]")
-    ref_df = plot_reference(ax[0])
+    ref_df = plot_reference(ax[0], reference_file)
 
     # Run OPTICS clustering with seuclidean distance metric.
-    if ref_df is not None:
-        clust = OPTICS(
-            min_samples=10, xi=0.0001, min_cluster_size=10, metric="precomputed"
+    clust = OPTICS(min_samples=10, xi=0.0001, min_cluster_size=10, metric="precomputed")
+    clust.fit(
+        scipy.spatial.distance.squareform(
+            scipy.spatial.distance.pdist(ref_df, metric="seuclidean")
         )
-        clust.fit(
-            scipy.spatial.distance.squareform(
-                scipy.spatial.distance.pdist(ref_df, metric="seuclidean")
-            )
-        )
-
-        ax[1].imshow(clust.labels_.reshape((15, -1)))
+    )
+    ax[1].imshow(clust.labels_.reshape((15, -1)))
 
     ax[1].set_title("Clustered")
     ax[1].set_axis_off()
@@ -147,6 +151,6 @@ def plot_optics():
 
 with optics:
     utils.show_markdown_sibling(__file__, "OPTICS")
-    st.pyplot(plot_optics())
+    show_plot(plot_optics)
 
 utils.page_tail()
