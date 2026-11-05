@@ -32,6 +32,6 @@ the expected number of groups in a sample.
 Methods I tried with results and complete description:
 
 - [Hierarchical clustering (successful)](Hierarchical_clustering)
-- [KMeans clustering (semi-successful)](KMeans_clustering)
+- [K-means clustering (semi-successful)](K-means_clustering)
 - [ChatGPT clustering (not successful)](Other_methods#chatgpt-clustering)
 - [OPTICS clustering (not successful)](Other_methods#optics-clustering)

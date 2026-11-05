@@ -18,6 +18,7 @@ input_tab, description_tab = st.tabs(["Data input", "Data description"])
 
 with description_tab:
     utils.show_markdown_sibling(__file__)
+    # TODO: Make links to methods using st.page_links()
 
 
 @utils.default_st_cache(show_spinner="Processing raw data file…")
@@ -93,6 +94,7 @@ with input_tab:
         preset = source_cols[1].selectbox(
             "Or select a preset:", presets, index=None, disabled=input_file is not None
         )
+    # TODO: Add default preset.
 
     try:
         if input_file is not None:

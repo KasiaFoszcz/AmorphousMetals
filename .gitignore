@@ -170,3 +170,5 @@ output/
 
 notebooks/*
 !notebooks/process_image.ipynb
+analytics.json
+.vscode-ctags

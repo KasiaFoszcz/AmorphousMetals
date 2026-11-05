@@ -15,5 +15,9 @@ st.image(
     use_column_width="always",
 )
 st.markdown(markdown[2])
+# TODO: Remove link to self.
+# TODO: Add links to starting point subpages.
+# TODO: Add short video on how to use.
+# TODO: Use https://github.com/blackary/st_pages with sections.
 
 utils.page_tail()
