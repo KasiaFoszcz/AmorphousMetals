@@ -213,7 +213,7 @@ def data_selection() -> SelectedData | None:
         if st.columns([1, 3, 1])[1].button(
             label="Please first upload data by clicking here.",
             type="primary",
-            use_container_width=True,
+            width="stretch",
         ):
             st.switch_page("pages/02_Data.py")
         return page_tail()
@@ -410,7 +410,6 @@ def inject_analytics():
         index_path.write_text(new_html)
 
 
-@st.cache_resource(experimental_allow_widgets=True)
 def get_cookie_manager():
     """Get cookie manager instance."""
     return stx.CookieManager()
